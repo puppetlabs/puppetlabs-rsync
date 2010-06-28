@@ -1,0 +1,6 @@
+rsync
+
+This is the rsync module. It manages rsync clients, repositories, and servers as well as
+providing defines to easily grab data via rsync and setup rsync servers
+
+Released 20100628 - Garrett Honeycutt - GPLv2

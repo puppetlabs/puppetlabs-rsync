@@ -1,0 +1,5 @@
+name    'ghoneycutt-rsync'
+version '1.0.0'
+
+dependency 'ghoneycutt/xinetd', '>= 1.0.0'
+dependency 'ghoneycutt/generic', '>= 1.0.0'

@@ -6,7 +6,9 @@
 #   class xinetd
 #   class rsync
 #
-class rsync::server inherits rsync {
+class rsync::server(
+  $address = '0.0.0.0'
+) inherits rsync {
 
     include xinetd
 
@@ -64,7 +66,7 @@ class rsync::server inherits rsync {
         "$rsync_fragments":
             ensure  => directory;
         "$rsync_fragments/header":
-            source => "puppet:///modules/rsync/header";
+            content => template('rsync/header.erb');
     } # file
 
     # perhaps this should be a script

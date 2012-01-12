@@ -3,14 +3,14 @@
 # The rsync server. Supports both standard rsync as well as rsync over ssh
 #
 # Requires:
-#   class xinetd
+#   class xinetd if user_xinetd is set to true
 #   class rsync
 #
 class rsync::server(
+  $use_xinetd = true,
   $address = '0.0.0.0'
 ) inherits rsync {
 
-    include xinetd
 
     $rsync_fragments = "/etc/rsync.d"
 
@@ -56,11 +56,20 @@ class rsync::server(
         }
     } # define rsync::server::module
 
-    xinetd::service {"rsync":
-        port        => "873",
-        server      => "/usr/bin/rsync",
-        server_args => "--daemon --config /etc/rsync.conf",
-    } # xinetd::service
+    if($use_xinetd) {
+      include xinetd
+      xinetd::service {"rsync":
+          port        => "873",
+          server      => "/usr/bin/rsync",
+          server_args => "--daemon --config /etc/rsync.conf",
+      } # xinetd::service
+    } else {
+      service { 'rsync':
+        ensure    => running,
+        enable    => true,
+        subscribe => Exec['compile fragments'],
+      }
+    }
 
     file {
         "$rsync_fragments":

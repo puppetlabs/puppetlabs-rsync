@@ -19,16 +19,19 @@ class rsync::server(
     # sets up a rsync server
     #
     # Parameters:   
-    #   $path           - path to data
-    #   $comment        - rsync comment
-    #   $motd           - file containing motd info
-    #   $read_only      - yes||no, defaults to yes
-    #   $write_only     - yes||no, defaults to no
-    #   $list           - yes||no, defaults to no
-    #   $uid            - uid of rsync server, defaults to 0
-    #   $gid            - gid of rsync server, defaults to 0
-    #   $incoming_chmod - incoming file mode, defaults to 644
-    #   $outgoing_chmod - outgoing file mode, defaults to 644
+    #   $path            - path to data
+    #   $comment         - rsync comment
+    #   $motd            - file containing motd info
+    #   $read_only       - yes||no, defaults to yes
+    #   $write_only      - yes||no, defaults to no
+    #   $list            - yes||no, defaults to no
+    #   $uid             - uid of rsync server, defaults to 0
+    #   $gid             - gid of rsync server, defaults to 0
+    #   $incoming_chmod  - incoming file mode, defaults to 644
+    #   $outgoing_chmod  - outgoing file mode, defaults to 644
+    #   $max_connections - maximum number of simultaneous connections allowed
+    #   $lock_file       - file used to support the max connections parameter
+    #    only needed if max_connections > 0
     #
     # Actions:
     #   sets up an rsync server
@@ -43,7 +46,7 @@ class rsync::server(
     #       require => File["$base"],
     #   } # rsync::server::module
     #
-    define module ($path, $comment = undef, $motd = undef, $read_only = 'yes', $write_only = 'no', $list = 'yes', $uid = '0', $gid = '0', $incoming_chmod = '644', $outgoing_chmod = '644') {
+    define module ($path, $comment = undef, $motd = undef, $read_only = 'yes', $write_only = 'no', $list = 'yes', $uid = '0', $gid = '0', $incoming_chmod = '644', $outgoing_chmod = '644', $max_connections = 0, $lock_file = '/var/run/rsyncd.lock')  {
         if $motd {
             file { "/etc/rsync-motd-$name":
                 source => "puppet:///modules/rsync/motd-$motd",

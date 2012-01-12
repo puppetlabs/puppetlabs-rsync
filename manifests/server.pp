@@ -86,5 +86,6 @@ class rsync::server(
         refreshonly => true,
         command     => "ls $rsync_fragments/frag-* 1>/dev/null 2>/dev/null && if [ $? -eq 0 ]; then cat $rsync_fragments/header $rsync_fragments/frag-* > /etc/rsync.conf; else cat $rsync_fragments/header > /etc/rsync.conf; fi; $(exit 0)",
         subscribe   => File["$rsync_fragments/header"],
+        path        => ['/bin'],
     } # exec
 } # class rsync::server    

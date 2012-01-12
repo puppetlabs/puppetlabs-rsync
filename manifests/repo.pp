@@ -12,7 +12,7 @@ class rsync::repo {
     include rsync::server
 
     $base = "/data/rsync"
-    
+
     file { "$base":
         ensure  => directory,
         require => File["/data"],

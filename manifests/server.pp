@@ -18,7 +18,7 @@ class rsync::server(
     #
     # sets up a rsync server
     #
-    # Parameters:   
+    # Parameters:
     #   $path            - path to data
     #   $comment         - rsync comment
     #   $motd            - file containing motd info
@@ -91,4 +91,4 @@ class rsync::server(
         subscribe   => File["$rsync_fragments/header"],
         path        => ['/bin'],
     } # exec
-} # class rsync::server    
+} # class rsync::server

@@ -11,7 +11,7 @@ class rsync {
     #
     # get files via rsync
     #
-    # Parameters:   
+    # Parameters:
     #   $source  - source to copy from
     #   $path    - path to copy to, defaults to $name
     #   $user    - username on remote system

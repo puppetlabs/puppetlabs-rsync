@@ -3,7 +3,7 @@
 # The rsync server. Supports both standard rsync as well as rsync over ssh
 #
 # Requires:
-#   class xinetd if user_xinetd is set to true
+#   class xinetd if use_xinetd is set to true
 #   class rsync
 #
 class rsync::server(

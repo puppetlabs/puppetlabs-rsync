@@ -62,6 +62,7 @@ class rsync::server(
     if($use_xinetd) {
       include xinetd
       xinetd::service {"rsync":
+          bind        => $address,
           port        => "873",
           server      => "/usr/bin/rsync",
           server_args => "--daemon --config /etc/rsync.conf",

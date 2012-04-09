@@ -66,6 +66,7 @@ class rsync::server(
           port        => "873",
           server      => "/usr/bin/rsync",
           server_args => "--daemon --config /etc/rsync.conf",
+          require     => Package['rsync'],
       } # xinetd::service
     } else {
       service { 'rsync':

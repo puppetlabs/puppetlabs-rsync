@@ -1,7 +1,6 @@
 # Class: rsync
 #
 # This module manages rsync and provides a define for grabbing files via rsync
-# It is included in the generic module for *ALL* nodes
 #
 class rsync {
 

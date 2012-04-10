@@ -16,7 +16,7 @@ class rsync::repo {
   }
 
   # setup default rsync repository
-  rsync::server::module{ 'repo':
+  rsync::server::module { 'repo':
     path    => $base,
     require => File[$base],
   }

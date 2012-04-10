@@ -32,17 +32,17 @@
 #
 define rsync::server::module (
   $path,
-  $comment = undef,
-  $motd = undef,
-  $read_only = 'yes',
-  $write_only = 'no',
-  $list = 'yes',
-  $uid = '0',
-  $gid = '0',
-  $incoming_chmod = '0644',
-  $outgoing_chmod = '0644',
+  $comment         = undef,
+  $motd            = undef,
+  $read_only       = 'yes',
+  $write_only      = 'no',
+  $list            = 'yes',
+  $uid             = '0',
+  $gid             = '0',
+  $incoming_chmod  = '0644',
+  $outgoing_chmod  = '0644',
   $max_connections = '0',
-  $lock_file = '/var/run/rsyncd.lock')  {
+  $lock_file       = '/var/run/rsyncd.lock')  {
 
   if $motd {
     file { "/etc/rsync-motd-${name}":

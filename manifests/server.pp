@@ -8,7 +8,8 @@
 #
 class rsync::server(
   $use_xinetd = true,
-  $address    = '0.0.0.0'
+  $address    = '0.0.0.0',
+  $motd_file  = 'UNSET'
 ) inherits rsync {
 
   $rsync_fragments = '/etc/rsync.d'
@@ -27,6 +28,12 @@ class rsync::server(
       ensure    => running,
       enable    => true,
       subscribe => Exec['compile fragments'],
+    }
+  }
+
+  if $motd_file != 'UNSET' {
+    file { '/etc/rsync-motd':
+      source => 'puppet:///modules/rsync/motd',
     }
   }
 

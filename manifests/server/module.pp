@@ -5,7 +5,6 @@
 # Parameters:
 #   $path            - path to data
 #   $comment         - rsync comment
-#   $motd            - file containing motd info
 #   $read_only       - yes||no, defaults to yes
 #   $write_only      - yes||no, defaults to no
 #   $list            - yes||no, defaults to yes
@@ -33,7 +32,6 @@
 define rsync::server::module (
   $path,
   $comment         = undef,
-  $motd            = undef,
   $read_only       = 'yes',
   $write_only      = 'no',
   $list            = 'yes',
@@ -43,12 +41,6 @@ define rsync::server::module (
   $outgoing_chmod  = '0644',
   $max_connections = '0',
   $lock_file       = '/var/run/rsyncd.lock')  {
-
-  if $motd {
-    file { "/etc/rsync-motd-${name}":
-      source => "puppet:///modules/rsync/motd-${motd}",
-    }
-  }
 
   file { "${rsync::server::rsync_fragments}/frag-${name}":
     content => template('rsync/module.erb'),

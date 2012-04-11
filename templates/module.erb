@@ -13,6 +13,5 @@ outgoing chmod  = <%= outgoing_chmod %>
 max connections = <%= max_connections %>
 <% if Integer(max_connections) > 0 %>lock file =     <%= lock_file %><% end %>
 <% if comment != :undef %>comment               = <%= comment %><% end %>
-<% if motd != :undef %>motd file                = /etc/rsync-motd-<%= name %><% end %>
 
 

@@ -60,6 +60,7 @@ define rsync::get (
 
   exec { "rsync ${name}":
     command => "rsync -qa ${MyPurge} ${MyExclude} ${MyUser}${source} ${MyPath}",
+    path    => [ '/bin', '/usr/bin' ],
     timeout => $timeout,
   }
 }

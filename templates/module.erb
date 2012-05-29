@@ -3,13 +3,13 @@
 
 [ <%= name %> ]
 path            = <%= path %>
-read only       = <%= read_only %>
-write only      = <%= write_only %>
-list            = <%= list %>
+read only       = <%= read_only_real %>
+write only      = <%= write_only_real %>
+list            = <%= list_real %>
 uid             = <%= uid %>
 gid             = <%= gid %>
-incoming chmod  = <%= incoming_chmod %>
-outgoing chmod  = <%= outgoing_chmod %>
+<% if incoming_chmod != false -%>incoming chmod  = <%= "#{incoming_chmod}\n" %><% end -%>
+<% if outgoing_chmod != false -%>outgoind chmod  = <%= "#{outgoing_chmod}\n" %><% end -%>
 max connections = <%= max_connections %>
 <% if Integer(max_connections) > 0 %>lock file =     <%= lock_file %><% end %>
 <% if comment != :undef %>comment               = <%= comment %><% end %>

@@ -1,19 +1,2 @@
-2.0.0 - 20120125
-  * Changed to Official Puppet Labs module
-  * <a633478> Switched licenses from GPL v2 to Apache Software License 2.0
-  * <18fc7d4> git is ignoring the pkg/ directory
-  * <e4770f2> fixing typo in use_xinetd variable
-  * Dan Bode added:
-    <33b633e> Support setting global rsync config bind address
-    <2173c55> Fix mispelling of fragments
-    <4e2bf60> Make the usage of xinetd configurable   Comment
-    <df07406> Remove trailing whitespec
-    <b4d9f5b> Add module config opts: 'max_connections', 'lock_file'
-    <95011ce> Add path to compile fragments exec
-    <47e10db> Remove metadata.json
-
-1.0.0 - 20100628
-  * initial release
-
-1.0.1 - 20100812
-  * added documentation
+* 2012-06-07 0.1.0
+- Initial release

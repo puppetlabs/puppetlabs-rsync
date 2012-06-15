@@ -1,4 +1,9 @@
-name    'ghoneycutt-rsync'
-version '1.0.1'
+name    'puppetlabs-rsync'
+version '0.1.0'
+source 'https://github.com/puppetlabs/puppetlabs-rsync'
+author 'Puppet Labs'
+license 'Apache License 2.0'
+summary 'Puppet module to install and configure rsync'
+project_page 'https://github.com/puppetlabs/puppetlabd-rsync'
 
-dependency 'ghoneycutt/xinetd', '>= 1.0.0'
+dependency 'puppetlabs/xinetd', '>= 1.1.0'

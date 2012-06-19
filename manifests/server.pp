@@ -9,7 +9,8 @@
 class rsync::server(
   $use_xinetd = true,
   $address    = '0.0.0.0',
-  $motd_file  = 'UNSET'
+  $motd_file  = 'UNSET',
+  $use_chroot = 'yes'
 ) inherits rsync {
 
   $rsync_fragments = '/etc/rsync.d'

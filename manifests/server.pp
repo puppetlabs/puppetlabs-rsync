@@ -13,6 +13,11 @@ class rsync::server(
   $use_chroot = 'yes'
 ) inherits rsync {
 
+  case $operatingsystem  {
+    ubuntu, debian: { $conf_file = '/etc/rsyncd.conf' }
+    default: { $conf_file = '/etc/rsync.conf' }
+  }
+
   $rsync_fragments = '/etc/rsync.d'
 
   if($use_xinetd) {
@@ -21,14 +26,22 @@ class rsync::server(
       bind        => $address,
       port        => '873',
       server      => '/usr/bin/rsync',
-      server_args => '--daemon --config /etc/rsync.conf',
+      server_args => "--daemon --config $conf_file",
       require     => Package['rsync'],
     }
   } else {
     service { 'rsync':
-      ensure    => running,
-      enable    => true,
-      subscribe => Exec['compile fragments'],
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+      subscribe  => Exec['compile fragments'],
+    }
+    if ( $operatingsystem == debian ) or ( $operatingsystem == ubuntu ) {
+      file { '/etc/default/rsync':
+        source => 'puppet:///modules/rsync/defaults',
+        notify => Service['rsync'],
+      }
     }
   }
 
@@ -52,7 +65,7 @@ class rsync::server(
   # which happens with cobbler systems by default
   exec { 'compile fragments':
     refreshonly => true,
-    command     => "ls ${rsync_fragments}/frag-* 1>/dev/null 2>/dev/null && if [ $? -eq 0 ]; then cat ${rsync_fragments}/header ${rsync_fragments}/frag-* > /etc/rsync.conf; else cat ${rsync_fragments}/header > /etc/rsync.conf; fi; $(exit 0)",
+    command     => "ls ${rsync_fragments}/frag-* 1>/dev/null 2>/dev/null && if [ $? -eq 0 ]; then cat ${rsync_fragments}/header ${rsync_fragments}/frag-* > $conf_file; else cat ${rsync_fragments}/header > $conf_file; fi; $(exit 0)",
     subscribe   => File["${rsync_fragments}/header"],
     path        => '/bin:/usr/bin',
   }

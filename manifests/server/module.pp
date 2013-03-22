@@ -45,6 +45,7 @@ define rsync::server::module (
   $max_connections = '0',
   $lock_file       = '/var/run/rsyncd.lock',
   $secrets_file    = undef,
+  $secrets         = undef,
   $auth_users      = undef,
   $hosts_allow     = undef,
   $hosts_deny      = undef)  {
@@ -53,4 +54,12 @@ define rsync::server::module (
     content => template('rsync/module.erb'),
     notify  => Exec['compile fragments'],
   }
+
+  if ( $secrets != undef ) and ( $secrets_file != undef ) {
+    file { "$secrets_file":
+      content => template('rsync/secrets.erb'),
+      mode    => 0600,
+    }
+  }
+
 }

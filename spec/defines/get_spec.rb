@@ -19,9 +19,18 @@ describe 'rsync::get', :type => :define do
       should contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a   example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a   example.com foobar | wc -l` -gt 0",
-        'timeout' => '900'
+        'timeout' => '900',
+        'user'    => 'root'
       })
     }
+  end
+
+  describe "when setting the execuser" do
+    let :params do
+      common_params.merge( { :execuser => 'username' } )
+    end
+
+    it{ should contain_exec("rsync foobar").with({ 'user' => 'username' }) }
   end
 
   describe "when setting the timeout" do

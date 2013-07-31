@@ -1,2 +1,4 @@
 metadata.json
 pkg/
+Gemfile.lock
+.rspec

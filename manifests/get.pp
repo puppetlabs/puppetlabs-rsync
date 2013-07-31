@@ -31,7 +31,8 @@ define rsync::get (
   $purge = undef,
   $exclude = undef,
   $keyfile = undef,
-  $timeout = '900'
+  $timeout = '900',
+  $execuser = 'root',
 ) {
 
   if $keyfile {
@@ -63,6 +64,7 @@ define rsync::get (
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",
     path    => [ '/bin', '/usr/bin' ],
+    user => $execuser,
     # perform a dry-run to determine if anything needs to be updated
     # this ensures that we only actually create a Puppet event if something needs to
     # be updated

@@ -19,6 +19,8 @@
 #   $auth_users      - list of usernames that will be allowed to connect to this module (must be undef or an array)
 #   $hosts_allow     - list of patterns allowed to connect to this module (man 5 rsyncd.conf for details, must be undef or an array)
 #   $hosts_deny      - list of patterns allowed to connect to this module (man 5 rsyncd.conf for details, must be undef or an array)
+#   $exclude         - list of files or globs to exclude from being served by this module (man 5 rsyncd.conf for details, must be undef or an array)
+#   $include         - list of files or globs that can be served by this module, negating excludes (man 5 rsyncd.conf for details, must be undef or an array)
 #
 #   sets up an rsync server
 #
@@ -47,7 +49,9 @@ define rsync::server::module (
   $secrets_file    = undef,
   $auth_users      = undef,
   $hosts_allow     = undef,
-  $hosts_deny      = undef)  {
+  $hosts_deny      = undef,
+  $exclude         = undef,
+  $include         = undef)  {
 
   file { "${rsync::server::rsync_fragments}/frag-${name}":
     content => template('rsync/module.erb'),

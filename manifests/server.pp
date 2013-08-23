@@ -42,6 +42,10 @@ class rsync::server(
     ensure  => directory,
   }
 
+  # Template uses:
+  # - $use_chroot
+  # - $address
+  # - $motd_file
   file { "${rsync_fragments}/header":
     content => template('rsync/header.erb'),
   }

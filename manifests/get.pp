@@ -33,7 +33,17 @@ define rsync::get (
   $keyfile = undef,
   $timeout = '900',
   $execuser = 'root',
+  $options = undef # overrides all other options if set
 ) {
+
+  if $options {
+    if !valid_options($options) {
+    fail("for resource ${title}, options are ${options}.  rsync options should not include -v or -q, which interfere with the ability to check for changes")
+  }
+    $rsync_flags = $options
+  } else {
+    $rsync_flags = "-a"
+  }
 
   if $keyfile {
     $Mykeyfile = $keyfile
@@ -59,7 +69,7 @@ define rsync::get (
     $MyPath = $name
   }
 
-  $rsync_options = "-a ${MyPurge} ${MyExclude} ${MyUser}${source} ${MyPath}"
+  $rsync_options = "${rsync_flags} ${MyPurge} ${MyExclude} ${MyUser}${source} ${MyPath}"
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

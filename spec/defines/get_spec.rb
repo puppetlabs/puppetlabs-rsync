@@ -98,6 +98,19 @@ describe 'rsync::get', :type => :define do
     }
   end
 
+  describe "when setting an include path" do
+    let :params do
+      common_params.merge({ :include => '/path/to/include/' })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a  --include=/path/to/include/ example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a  --include=/path/to/include/ example.com foobar | wc -l` -gt 0",
+       })
+    }
+  end
+
   describe "when enabling purge" do
     let :params do
       common_params.merge({ :purge => true })
@@ -107,6 +120,71 @@ describe 'rsync::get', :type => :define do
       should contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --delete  example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --delete  example.com foobar | wc -l` -gt 0"
+       })
+    }
+  end
+
+  describe "when enabling recursive" do
+    let :params do
+      common_params.merge({ :recursive => true })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a -r  example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a -r  example.com foobar | wc -l` -gt 0"
+       })
+    }
+  end
+
+  describe "when enabling links" do
+    let :params do
+      common_params.merge({ :links => true })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --links  example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --links  example.com foobar | wc -l` -gt 0"
+       })
+    }
+  end
+
+  describe "when enabling hardlinks" do
+    let :params do
+      common_params.merge({ :hardlinks => true })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --hard-links  example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --hard-links  example.com foobar | wc -l` -gt 0"
+       })
+    }
+  end
+
+  describe "when enabling copylinks" do
+    let :params do
+      common_params.merge({ :copylinks => true })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --copy-links  example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --copy-links  example.com foobar | wc -l` -gt 0"
+       })
+    }
+  end
+
+  describe "when enabling times" do
+    let :params do
+      common_params.merge({ :times => true })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --times  example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --times  example.com foobar | wc -l` -gt 0"
        })
     }
   end

@@ -52,7 +52,7 @@ define rsync::get (
   }
 
   if $purge {
-    $MyPurge = '--delete'
+    $MyPurge = ' --delete'
   }
 
   # Not currently correct, there can be multiple --exclude arguments
@@ -66,26 +66,26 @@ define rsync::get (
   }
 
   if $recursive {
-    $MyRecursive = ' -r '
+    $MyRecursive = ' -r'
   }
 
   if $links {
-    $MyLinks = ' --links '
+    $MyLinks = ' --links'
   }
 
   if $hardlinks {
-    $MyHardLinks = ' --hard-links '
+    $MyHardLinks = ' --hard-links'
   }
 
   if $copylinks {
-    $MyCopyLinks = ' --copy-links '
+    $MyCopyLinks = ' --copy-links'
   }
 
   if $times {
-    $MyTimes = ' --times '
+    $MyTimes = ' --times'
   }
 
-  $rsync_options = "-a ${MyPurge} ${MyExclude}${MyInclude}${MyLinks}${MyHardLinks}${MyCopyLinks}${MyTimes}${MyRecursive} ${MyUser}${source} ${path}"
+  $rsync_options = "-a${MyPurge}${MyExclude}${MyInclude}${MyLinks}${MyHardLinks}${MyCopyLinks}${MyTimes}${MyRecursive} ${MyUser}${source} ${path}"
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

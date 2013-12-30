@@ -41,7 +41,8 @@ define rsync::put (
   }
 
   if $user {
-    $MyUser = "-e 'ssh -i ${Mykeyfile} -l ${user}' ${user}@"
+    $MyUserOpt = "-e 'ssh -i ${Mykeyfile} -l ${user}' "
+    $MyUser = "${user}@"
   }
 
   if $purge {
@@ -58,7 +59,7 @@ define rsync::put (
     $MyPath = $name
   }
 
-  $rsync_options = "-a ${MyPurge} ${MyExclude} ${source} ${MyUser}${MyPath}"
+  $rsync_options = "-a ${MyPurge} ${MyExclude} ${MyUserOpt}${source} ${MyUser}${MyPath}"
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

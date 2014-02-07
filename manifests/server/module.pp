@@ -45,6 +45,7 @@ define rsync::server::module (
   $max_connections = '0',
   $lock_file       = '/var/run/rsyncd.lock',
   $secrets_file    = undef,
+  $exclude         = undef,
   $auth_users      = undef,
   $hosts_allow     = undef,
   $hosts_deny      = undef)  {

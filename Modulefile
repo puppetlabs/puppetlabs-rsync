@@ -7,3 +7,4 @@ summary 'Puppet module to install and configure rsync'
 project_page 'https://github.com/puppetlabs/puppetlabs-rsync'
 
 dependency 'puppetlabs/xinetd', '>= 1.1.0'
+dependency 'puppetlabs/stdlib', '>= 2.2.1'

@@ -20,7 +20,7 @@ class rsync::server(
 
   $rsync_fragments = '/etc/rsync.d'
 
-  if str2bool($use_xinetd) {
+  if $use_xinetd {
     include xinetd
     xinetd::service { 'rsync':
       bind        => $address,

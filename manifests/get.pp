@@ -63,7 +63,7 @@ define rsync::get (
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",
-    path    => [ '/bin', '/usr/bin' ],
+    path    => [ '/bin', '/usr/bin', '/usr/local/bin' ],
     user => $execuser,
     # perform a dry-run to determine if anything needs to be updated
     # this ensures that we only actually create a Puppet event if something needs to

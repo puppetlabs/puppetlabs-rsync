@@ -2,7 +2,7 @@
 #
 # This module manages rsync
 #
-class rsync($ensure = 'installed') {
+class rsync($package_ensure = 'installed') {
 
   package { 'rsync':
     ensure => $ensure,

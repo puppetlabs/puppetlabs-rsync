@@ -8,14 +8,20 @@ providing defines to easily grab data via rsync.
 get files via rsync
 
 ## Parameters: ##
-    $source   - source to copy from
-    $path     - path to copy to, defaults to $name
-    $user     - username on remote system
-    $purge    - if set, rsync will use '--delete'
-    $exlude   - string to be excluded
-    $keyfile  - ssh key used to connect to remote host
-    $timeout  - timeout in seconds, defaults to 900
-    $execuser - user to run the command (passed to exec)
+    $source     - source to copy from
+    $path       - path to copy to, defaults to $name
+    $user       - username on remote system
+    $purge      - if set, rsync will use '--delete'
+    $recursive  - if set, rsync will use '-r'
+    $links      - if set, rsync will use '--links'
+    $hardlinks  - if set, rsync will use '--hard-links'
+    $copylinks  - if set, rsync will use '--copy-links'
+    $times      - if set, rsycn will use '--times'
+    $include    - string to be included
+    $exclude    - string to be excluded
+    $keyfile    - ssh key used to connect to remote host
+    $timeout    - timeout in seconds, defaults to 900
+    $execuser   - user to run the command (passed to exec)
 
 ## Actions: ##
   get files via rsync

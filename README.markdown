@@ -29,6 +29,31 @@ get files via rsync
       require => File['/foo'],
     }
 
+# Definition: rsync::put #
+
+put files via rsync
+
+## Parameters: ##
+    $source  - source to copy from
+    $path    - path to copy to, defaults to $name
+    $user    - username on remote system
+    $purge   - if set, rsync will use '--delete'
+    $exlude  - string to be excluded
+    $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+    $timeout - timeout in seconds, defaults to 900
+
+## Actions: ##
+  put files via rsync
+
+## Requires: ##
+  $source must be set
+
+## Sample Usage: ##
+    rsync::put { '${rsyncDestHost}:/repo/foo':
+      user    => 'user',
+      source  => "/repo/foo/",
+    }
+
 # Definition: rsync::server::module #
 
 sets up a rsync server

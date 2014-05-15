@@ -3,6 +3,16 @@
 puppetlabs-rsync manages rsync clients, repositories, and servers as well as
 providing defines to easily grab data via rsync.
 
+# Definition: rsync #
+
+Manage rsync package
+
+## Parameters: ##
+    $package_ensure - any of the valid values for the package resource: present, absent, purged, held, latest
+
+## Sample Usage: ##
+    class { 'rsync': package_ensure => 'latest' }
+
 # Definition: rsync::get #
 
 get files via rsync
@@ -22,6 +32,7 @@ get files via rsync
     $keyfile    - ssh key used to connect to remote host
     $timeout    - timeout in seconds, defaults to 900
     $execuser   - user to run the command (passed to exec)
+    $chown      - USER:GROUP simple username/groupname mapping
 
 ## Actions: ##
   get files via rsync

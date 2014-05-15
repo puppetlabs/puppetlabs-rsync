@@ -5,6 +5,6 @@
 class rsync($package_ensure = 'installed') {
 
   package { 'rsync':
-    ensure => $ensure,
+    ensure => $package_ensure,
   } -> Rsync::Get<| |>
 }

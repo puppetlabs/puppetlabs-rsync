@@ -26,13 +26,19 @@
 #
 define rsync::get (
   $source,
-  $path = undef,
-  $user = undef,
-  $purge = undef,
-  $exclude = undef,
-  $keyfile = undef,
-  $timeout = '900',
-  $execuser = 'root',
+  $path       = $name,
+  $user       = undef,
+  $purge      = undef,
+  $recursive  = undef,
+  $links      = undef,
+  $hardlinks  = undef,
+  $copylinks  = undef,
+  $times      = undef,
+  $include    = undef,
+  $exclude    = undef,
+  $keyfile    = undef,
+  $timeout    = '900',
+  $execuser   = 'root',
 ) {
 
   if $keyfile {
@@ -46,20 +52,40 @@ define rsync::get (
   }
 
   if $purge {
-    $MyPurge = '--delete'
+    $MyPurge = ' --delete'
   }
 
+  # Not currently correct, there can be multiple --exclude arguments
   if $exclude {
-    $MyExclude = "--exclude=${exclude}"
+    $MyExclude = " --exclude=${exclude}"
   }
 
-  if $path {
-    $MyPath = $path
-  } else {
-    $MyPath = $name
+  # Not currently correct, there can be multiple --include arguments
+  if $include {
+    $MyInclude = " --include=${include}"
   }
 
-  $rsync_options = "-a ${MyPurge} ${MyExclude} ${MyUser}${source} ${MyPath}"
+  if $recursive {
+    $MyRecursive = ' -r'
+  }
+
+  if $links {
+    $MyLinks = ' --links'
+  }
+
+  if $hardlinks {
+    $MyHardLinks = ' --hard-links'
+  }
+
+  if $copylinks {
+    $MyCopyLinks = ' --copy-links'
+  }
+
+  if $times {
+    $MyTimes = ' --times'
+  }
+
+  $rsync_options = "-a${MyPurge}${MyExclude}${MyInclude}${MyLinks}${MyHardLinks}${MyCopyLinks}${MyTimes}${MyRecursive} ${MyUser}${source} ${path}"
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

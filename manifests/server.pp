@@ -10,7 +10,9 @@ class rsync::server(
   $use_xinetd = true,
   $address    = '0.0.0.0',
   $motd_file  = 'UNSET',
-  $use_chroot = 'yes'
+  $use_chroot = 'yes',
+  $uid        = 'nobody',
+  $gid        = 'nobody'
 ) inherits rsync {
 
   $conf_file = $::osfamily ? {

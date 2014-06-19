@@ -9,6 +9,7 @@
 #   $purge   - if set, rsync will use '--delete'
 #   $exlude  - string to be excluded
 #   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+#   $port    - ssh port
 #   $timeout - timeout in seconds, defaults to 900
 #
 # Actions:
@@ -37,6 +38,7 @@ define rsync::get (
   $include    = undef,
   $exclude    = undef,
   $keyfile    = undef,
+  $port       = undef,
   $timeout    = '900',
   $execuser   = 'root',
 ) {
@@ -85,7 +87,10 @@ define rsync::get (
     $MyTimes = ' --times'
   }
 
-  $rsync_options = "-a${MyPurge}${MyExclude}${MyInclude}${MyLinks}${MyHardLinks}${MyCopyLinks}${MyTimes}${MyRecursive} ${MyUser}${source} ${path}"
+  if $port {
+    $MyPort = "-e \"ssh -p ${port}  -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no\""
+  }
+  $rsync_options = "-a${MyPurge}${MyExclude}${MyInclude}${MyLinks}${MyHardLinks}${MyCopyLinks}${MyTimes}${MyRecursive}${MyPort} ${MyUser}${source} ${path}"
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

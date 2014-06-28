@@ -33,6 +33,7 @@ get files via rsync
     $timeout    - timeout in seconds, defaults to 900
     $execuser   - user to run the command (passed to exec)
     $chown      - USER:GROUP simple username/groupname mapping
+    $onlyif     - condition to run the rsync command
 
 ## Actions: ##
   get files via rsync

@@ -39,7 +39,7 @@ define rsync::get (
   $keyfile    = undef,
   $timeout    = '900',
   $execuser   = 'root',
-  $chown = undef,
+  $chown      = undef,
 ) {
 
   if $keyfile {
@@ -90,7 +90,7 @@ define rsync::get (
     $MyChown = " --chown=${chown}"
   }
 
-  $rsync_options = "-a${MyPurge}${MyExclude}${MyInclude}${MyLinks}${MyHardLinks}${MyCopyLinks}${MyTimes}${MyRecursive}$MyChown ${MyUser}${source} ${path}"
+  $rsync_options = "-a${MyPurge}${MyExclude}${MyInclude}${MyLinks}${MyHardLinks}${MyCopyLinks}${MyTimes}${MyRecursive}${MyChown} ${MyUser}${source} ${path}"
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

@@ -3,7 +3,7 @@
 puppetlabs-rsync manages rsync clients, repositories, and servers as well as
 providing defines to easily grab data via rsync.
 
-# Definition: rsync #
+# Class: rsync #
 
 Manage rsync package
 

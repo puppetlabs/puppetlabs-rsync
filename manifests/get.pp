@@ -43,54 +43,54 @@ define rsync::get (
 ) {
 
   if $keyfile {
-    $Mykeyfile = $keyfile
+    $mykeyfile = $keyfile
   } else {
-    $Mykeyfile = "/home/${user}/.ssh/id_rsa"
+    $mykeyfile = "/home/${user}/.ssh/id_rsa"
   }
 
   if $user {
-    $MyUser = "-e 'ssh -i ${Mykeyfile} -l ${user}' ${user}@"
+    $myUser = "-e 'ssh -i ${mykeyfile} -l ${user}' ${user}@"
   }
 
   if $purge {
-    $MyPurge = ' --delete'
+    $myPurge = ' --delete'
   }
 
   # Not currently correct, there can be multiple --exclude arguments
   if $exclude {
-    $MyExclude = " --exclude=${exclude}"
+    $myExclude = " --exclude=${exclude}"
   }
 
   # Not currently correct, there can be multiple --include arguments
   if $include {
-    $MyInclude = " --include=${include}"
+    $myInclude = " --include=${include}"
   }
 
   if $recursive {
-    $MyRecursive = ' -r'
+    $myRecursive = ' -r'
   }
 
   if $links {
-    $MyLinks = ' --links'
+    $myLinks = ' --links'
   }
 
   if $hardlinks {
-    $MyHardLinks = ' --hard-links'
+    $myHardLinks = ' --hard-links'
   }
 
   if $copylinks {
-    $MyCopyLinks = ' --copy-links'
+    $myCopyLinks = ' --copy-links'
   }
 
   if $times {
-    $MyTimes = ' --times'
+    $myTimes = ' --times'
   }
 
   if $chown {
-    $MyChown = " --chown=${chown}"
+    $myChown = " --chown=${chown}"
   }
 
-  $rsync_options = "-a${MyPurge}${MyExclude}${MyInclude}${MyLinks}${MyHardLinks}${MyCopyLinks}${MyTimes}${MyRecursive}${MyChown} ${MyUser}${source} ${path}"
+  $rsync_options = "-a${myPurge}${myExclude}${myInclude}${myLinks}${myHardLinks}${myCopyLinks}${myTimes}${myRecursive}${myChown} ${myUser}${source} ${path}"
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

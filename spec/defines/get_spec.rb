@@ -201,4 +201,18 @@ describe 'rsync::get', :type => :define do
        })
     }
   end
+
+  describe "when setting a custom onlyif condition" do
+    let :params do
+      common_params.merge({ :onlyif => 'false' })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a example.com foobar',
+        'onlyif'  => "false"
+       })
+    }
+  end
+
 end

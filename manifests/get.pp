@@ -42,6 +42,7 @@ define rsync::get (
   $execuser   = 'root',
   $chown      = undef,
   $onlyif     = undef,
+  $compress   = undef,
 ) {
 
   if $keyfile {
@@ -91,8 +92,12 @@ define rsync::get (
   if $chown {
     $myChown = " --chown=${chown}"
   }
+  
+  if $compress {
+    $myCompress = ' --compress'
+  }
 
-  $rsync_options = "-a${myPurge}${myExclude}${myInclude}${myLinks}${myHardLinks}${myCopyLinks}${myTimes}${myRecursive}${myChown} ${myUser}${source} ${path}"
+  $rsync_options = "-a${myPurge}${myExclude}${myInclude}${myLinks}${myHardLinks}${myCopyLinks}${myTimes}${myRecursive}${myChown}${myCompress} ${myUser}${source} ${path}"
 
   if !$onlyif {
     $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"

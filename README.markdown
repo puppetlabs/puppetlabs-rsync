@@ -27,6 +27,7 @@ get files via rsync
     $hardlinks  - if set, rsync will use '--hard-links'
     $copylinks  - if set, rsync will use '--copy-links'
     $times      - if set, rsycn will use '--times'
+    $compress   - if set, rsycn will use '--compress'
     $include    - string to be included
     $exclude    - string to be excluded
     $keyfile    - ssh key used to connect to remote host

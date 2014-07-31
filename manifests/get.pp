@@ -3,14 +3,16 @@
 # get files via rsync
 #
 # Parameters:
-#   $source  - source to copy from
-#   $path    - path to copy to, defaults to $name
-#   $user    - username on remote system
-#   $purge   - if set, rsync will use '--delete'
-#   $exlude  - string to be excluded
-#   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
-#   $timeout - timeout in seconds, defaults to 900
-#   $onlyif  - Condition to run the rsync command
+#   $source   - source to copy from
+#   $path     - path to copy to, defaults to $name
+#   $user     - username on remote system
+#   $purge    - if set, rsync will use '--delete'
+#   $times    - if set, rsync will use '--times'
+#   $compress - if set, rsync will use '--compress'
+#   $exlude   - string to be excluded
+#   $keyfile  - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+#   $timeout  - timeout in seconds, defaults to 900
+#   $onlyif   - Condition to run the rsync command
 #
 # Actions:
 #   get files via rsync
@@ -42,6 +44,7 @@ define rsync::get (
   $execuser   = 'root',
   $chown      = undef,
   $onlyif     = undef,
+  $compress   = undef,
 ) {
 
   if $keyfile {
@@ -91,8 +94,12 @@ define rsync::get (
   if $chown {
     $myChown = " --chown=${chown}"
   }
+  
+  if $compress {
+    $myCompress = ' --compress'
+  }
 
-  $rsync_options = "-a${myPurge}${myExclude}${myInclude}${myLinks}${myHardLinks}${myCopyLinks}${myTimes}${myRecursive}${myChown} ${myUser}${source} ${path}"
+  $rsync_options = "-a${myPurge}${myExclude}${myInclude}${myLinks}${myHardLinks}${myCopyLinks}${myTimes}${myRecursive}${myChown}${myCompress} ${myUser}${source} ${path}"
 
   if !$onlyif {
     $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"

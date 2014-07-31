@@ -214,5 +214,18 @@ describe 'rsync::get', :type => :define do
        })
     }
   end
+  
+  describe "when enabling compression" do
+    let :params do
+      common_params.merge({ :compress => true })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --compress example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --compress example.com foobar | wc -l` -gt 0"
+       })
+    }
+  end
 
 end

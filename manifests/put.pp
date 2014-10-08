@@ -35,31 +35,31 @@ define rsync::put (
 ) {
 
   if $keyfile {
-    $Mykeyfile = $keyfile
+    $myKeyfile = $keyfile
   } else {
-    $Mykeyfile = "/home/${user}/.ssh/id_rsa"
+    $myKeyfile = "/home/${user}/.ssh/id_rsa"
   }
 
   if $user {
-    $MyUserOpt = "-e 'ssh -i ${Mykeyfile} -l ${user}' "
-    $MyUser = "${user}@"
+    $myUserOpt = "-e 'ssh -i ${myKeyfile} -l ${user}' "
+    $myUser = "${user}@"
   }
 
   if $purge {
-    $MyPurge = '--delete'
+    $myPurge = '--delete'
   }
 
   if $exclude {
-    $MyExclude = "--exclude=${exclude}"
+    $myExclude = "--exclude=${exclude}"
   }
 
   if $path {
-    $MyPath = $path
+    $myPath = $path
   } else {
-    $MyPath = $name
+    $myPath = $name
   }
 
-  $rsync_options = "-a ${MyPurge} ${MyExclude} ${MyUserOpt}${source} ${MyUser}${MyPath}"
+  $rsync_options = "-a ${myPurge} ${myExclude} ${myUserOpt}${source} ${myUser}${myPath}"
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

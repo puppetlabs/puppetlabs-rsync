@@ -83,8 +83,21 @@ describe 'rsync::put', :type => :define do
 
     it {
       should contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a  --exclude=/path/to/exclude/ example.com foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a  --exclude=/path/to/exclude/ example.com foobar | wc -l` -gt 0",
+        'command' => 'rsync -q -a   --exclude=/path/to/exclude/ example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a   --exclude=/path/to/exclude/ example.com foobar | wc -l` -gt 0",
+       })
+    }
+  end
+
+  describe "when setting multiple exclude paths" do
+    let :params do
+      common_params.merge({ :exclude => ['/path/one/exclude/','/path/two/exclude/'] })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a   --exclude=/path/one/exclude/ --exclude=/path/two/exclude/ example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a   --exclude=/path/one/exclude/ --exclude=/path/two/exclude/ example.com foobar | wc -l` -gt 0",
        })
     }
   end

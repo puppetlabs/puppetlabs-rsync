@@ -41,6 +41,7 @@ define rsync::get (
   $timeout    = '900',
   $execuser   = 'root',
   $chown      = undef,
+  $ignoretimes= undef,
   $onlyif     = undef,
 ) {
 
@@ -92,7 +93,11 @@ define rsync::get (
     $myChown = " --chown=${chown}"
   }
 
-  $rsync_options = "-a${myPurge}${myExclude}${myInclude}${myLinks}${myHardLinks}${myCopyLinks}${myTimes}${myRecursive}${myChown} ${myUser}${source} ${path}"
+  if $ignoretimes {
+    $myIgnoreTimes = ' --ignore-times'
+  }
+
+  $rsync_options = "-a${myPurge}${myExclude}${myInclude}${myLinks}${myHardLinks}${myCopyLinks}${myTimes}${myRecursive}${myChown}${myIgnoreTimes} ${myUser}${source} ${path}"
 
   if !$onlyif {
     $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"

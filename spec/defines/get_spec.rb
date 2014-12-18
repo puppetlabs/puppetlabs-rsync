@@ -150,6 +150,19 @@ describe 'rsync::get', :type => :define do
     }
   end
 
+  describe "when changing rsync options" do
+    let :params do
+      common_params.merge({ :options => '-rlpcgoD' })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -rlpcgoD example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -rlpcgoD example.com foobar | wc -l` -gt 0"
+       })
+    }
+  end
+
   describe "when enabling hardlinks" do
     let :params do
       common_params.merge({ :hardlinks => true })

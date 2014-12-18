@@ -32,6 +32,7 @@ get files via rsync
     $keyfile    - ssh key used to connect to remote host
     $timeout    - timeout in seconds, defaults to 900
     $execuser   - user to run the command (passed to exec)
+    $options    - default options to pass to rsync (-a)
     $chown      - USER:GROUP simple username/groupname mapping
     $onlyif     - condition to run the rsync command
 
@@ -60,6 +61,7 @@ put files via rsync
     $exlude  - string to be excluded
     $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
     $timeout - timeout in seconds, defaults to 900
+    $options - default options to pass to rsync (-a)
 
 ## Actions: ##
   put files via rsync

@@ -10,6 +10,7 @@
 #   $exlude  - string to be excluded
 #   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
 #   $timeout - timeout in seconds, defaults to 900
+#   $options - default options to pass to rsync (-a)
 #   $onlyif  - Condition to run the rsync command
 #
 # Actions:
@@ -40,6 +41,7 @@ define rsync::get (
   $keyfile    = undef,
   $timeout    = '900',
   $execuser   = 'root',
+  $options    = '-a',
   $chown      = undef,
   $onlyif     = undef,
 ) {
@@ -92,7 +94,7 @@ define rsync::get (
     $myChown = " --chown=${chown}"
   }
 
-  $rsync_options = "-a${myPurge}${myExclude}${myInclude}${myLinks}${myHardLinks}${myCopyLinks}${myTimes}${myRecursive}${myChown} ${myUser}${source} ${path}"
+  $rsync_options = "${options}${myPurge}${myExclude}${myInclude}${myLinks}${myHardLinks}${myCopyLinks}${myTimes}${myRecursive}${myChown} ${myUser}${source} ${path}"
 
   if !$onlyif {
     $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"

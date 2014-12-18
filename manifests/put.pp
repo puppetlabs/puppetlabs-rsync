@@ -10,6 +10,7 @@
 #   $exlude  - string to be excluded
 #   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
 #   $timeout - timeout in seconds, defaults to 900
+#   $options - default options to pass to rsync (-a)
 #
 # Actions:
 #   put files via rsync
@@ -31,7 +32,8 @@ define rsync::put (
   $purge = undef,
   $exclude = undef,
   $keyfile = undef,
-  $timeout = '900'
+  $timeout = '900',
+  $options = '-a'
 ) {
 
   if $keyfile {
@@ -59,7 +61,7 @@ define rsync::put (
     $MyPath = $name
   }
 
-  $rsync_options = "-a ${MyPurge} ${MyExclude} ${MyUserOpt}${source} ${MyUser}${MyPath}"
+  $rsync_options = "${options} ${MyPurge} ${MyExclude} ${MyUserOpt}${source} ${MyUser}${MyPath}"
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

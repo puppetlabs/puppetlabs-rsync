@@ -7,7 +7,8 @@
 #   $path    - path to copy to, defaults to $name
 #   $user    - username on remote system
 #   $purge   - if set, rsync will use '--delete'
-#   $exlude  - string to be excluded
+#   $exlude  - string (or array) to be excluded
+#   $include - string (or array) to be included
 #   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
 #   $timeout - timeout in seconds, defaults to 900
 #   $options - default options to pass to rsync (-a)
@@ -57,44 +58,43 @@ define rsync::get (
   }
 
   if $purge {
-    $myPurge = ' --delete'
+    $myPurge = '--delete'
   }
 
-  # Not currently correct, there can be multiple --exclude arguments
   if $exclude {
-    $myExclude = " --exclude=${exclude}"
+    $myExclude = join(prefix(flatten([$exclude]), '--exclude='), ' ')
   }
 
-  # Not currently correct, there can be multiple --include arguments
   if $include {
-    $myInclude = " --include=${include}"
+    $myInclude = join(prefix(flatten([$include]), '--include='), ' ')
   }
 
   if $recursive {
-    $myRecursive = ' -r'
+    $myRecursive = '-r'
   }
 
   if $links {
-    $myLinks = ' --links'
+    $myLinks = '--links'
   }
 
   if $hardlinks {
-    $myHardLinks = ' --hard-links'
+    $myHardLinks = '--hard-links'
   }
 
   if $copylinks {
-    $myCopyLinks = ' --copy-links'
+    $myCopyLinks = '--copy-links'
   }
 
   if $times {
-    $myTimes = ' --times'
+    $myTimes = '--times'
   }
 
   if $chown {
-    $myChown = " --chown=${chown}"
+    $myChown = "--chown=${chown}"
   }
 
-  $rsync_options = "${options}${myPurge}${myExclude}${myInclude}${myLinks}${myHardLinks}${myCopyLinks}${myTimes}${myRecursive}${myChown} ${myUser}${source} ${path}"
+  $rsync_options = join(
+    delete_undef_values([$options, $myPurge, $myExclude, $myInclude, $myLinks, $myHardLinks, $myCopyLinks, $myTimes, $myRecursive, $myChown, "${myUser}${source}", $path]), ' ')
 
   if !$onlyif {
     $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"

@@ -98,6 +98,19 @@ describe 'rsync::get', :type => :define do
     }
   end
 
+  describe "when setting multiple exclude paths" do
+    let :params do
+      common_params.merge({ :exclude => ['logs/', 'tmp/'] })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --exclude=logs/ --exclude=tmp/ example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --exclude=logs/ --exclude=tmp/ example.com foobar | wc -l` -gt 0",
+       })
+    }
+  end
+
   describe "when setting an include path" do
     let :params do
       common_params.merge({ :include => '/path/to/include/' })
@@ -107,6 +120,19 @@ describe 'rsync::get', :type => :define do
       should contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --include=/path/to/include/ example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --include=/path/to/include/ example.com foobar | wc -l` -gt 0",
+       })
+    }
+  end
+
+  describe "when setting multiple include paths" do
+    let :params do
+      common_params.merge({ :include => [ 'htdocs/', 'cache/' ] })
+    end
+
+    it {
+      should contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --include=htdocs/ --include=cache/ example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --include=htdocs/ --include=cache/ example.com foobar | wc -l` -gt 0",
        })
     }
   end

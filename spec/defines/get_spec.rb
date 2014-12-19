@@ -16,7 +16,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a example.com foobar | wc -l` -gt 0",
         'timeout' => '900',
@@ -30,7 +30,7 @@ describe 'rsync::get', :type => :define do
       common_params.merge( { :execuser => 'username' } )
     end
 
-    it{ should contain_exec("rsync foobar").with({ 'user' => 'username' }) }
+    it{ is_expected.to contain_exec("rsync foobar").with({ 'user' => 'username' }) }
   end
 
   describe "when setting the timeout" do
@@ -39,7 +39,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({ 'timeout' => '200' })
+      is_expected.to contain_exec("rsync foobar").with({ 'timeout' => '200' })
     }
   end
 
@@ -49,7 +49,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a -e \'ssh -i /home/mr_baz/.ssh/id_rsa -l mr_baz\' mr_baz@example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a -e \'ssh -i /home/mr_baz/.ssh/id_rsa -l mr_baz\' mr_baz@example.com foobar | wc -l` -gt 0",
       })
@@ -62,7 +62,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a example.com foobar | wc -l` -gt 0",
       })
@@ -78,7 +78,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a -e \'ssh -i /path/to/keyfile -l mr_baz\' mr_baz@example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a -e \'ssh -i /path/to/keyfile -l mr_baz\' mr_baz@example.com foobar | wc -l` -gt 0",
        })
@@ -91,7 +91,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --exclude=/path/to/exclude/ example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --exclude=/path/to/exclude/ example.com foobar | wc -l` -gt 0",
        })
@@ -104,7 +104,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --exclude=logs/ --exclude=tmp/ example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --exclude=logs/ --exclude=tmp/ example.com foobar | wc -l` -gt 0",
        })
@@ -117,7 +117,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --include=/path/to/include/ example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --include=/path/to/include/ example.com foobar | wc -l` -gt 0",
        })
@@ -130,7 +130,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --include=htdocs/ --include=cache/ example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --include=htdocs/ --include=cache/ example.com foobar | wc -l` -gt 0",
        })
@@ -143,7 +143,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --delete example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --delete example.com foobar | wc -l` -gt 0"
        })
@@ -156,7 +156,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a -r example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a -r example.com foobar | wc -l` -gt 0"
        })
@@ -169,7 +169,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --links example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --links example.com foobar | wc -l` -gt 0"
        })
@@ -182,7 +182,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -rlpcgoD example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -rlpcgoD example.com foobar | wc -l` -gt 0"
        })
@@ -195,7 +195,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --hard-links example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --hard-links example.com foobar | wc -l` -gt 0"
        })
@@ -208,7 +208,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --copy-links example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --copy-links example.com foobar | wc -l` -gt 0"
        })
@@ -221,7 +221,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a --times example.com foobar',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a --times example.com foobar | wc -l` -gt 0"
        })
@@ -234,7 +234,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a example.com barfoo',
         'onlyif'  => "test `rsync --dry-run --itemize-changes -a example.com barfoo | wc -l` -gt 0"
        })
@@ -247,7 +247,7 @@ describe 'rsync::get', :type => :define do
     end
 
     it {
-      should contain_exec("rsync foobar").with({
+      is_expected.to contain_exec("rsync foobar").with({
         'command' => 'rsync -q -a example.com foobar',
         'onlyif'  => "false"
        })

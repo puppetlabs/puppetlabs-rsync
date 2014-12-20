@@ -46,7 +46,7 @@ define rsync::put (
   }
 
   if $user {
-    $myUserOpt = "-e 'ssh -i ${myKeyfile} -l ${user}' "
+    $myUserOpt = "-e 'ssh -i ${myKeyfile} -l ${user}'"
     $myUser = "${user}@"
   }
 

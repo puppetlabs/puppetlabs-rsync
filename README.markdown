@@ -26,12 +26,13 @@ get files via rsync
     $links      - if set, rsync will use '--links'
     $hardlinks  - if set, rsync will use '--hard-links'
     $copylinks  - if set, rsync will use '--copy-links'
-    $times      - if set, rsycn will use '--times'
-    $include    - string to be included
-    $exclude    - string to be excluded
+    $times      - if set, rsync will use '--times'
+    $include    - string (or array) to be included
+    $exclude    - string (or array) to be excluded
     $keyfile    - ssh key used to connect to remote host
     $timeout    - timeout in seconds, defaults to 900
     $execuser   - user to run the command (passed to exec)
+    $options    - default options to pass to rsync (-a)
     $chown      - USER:GROUP simple username/groupname mapping
     $onlyif     - condition to run the rsync command
 
@@ -57,9 +58,11 @@ put files via rsync
     $path    - path to copy to, defaults to $name
     $user    - username on remote system
     $purge   - if set, rsync will use '--delete'
-    $exlude  - string to be excluded
+    $include - string (or array) to be included
+    $exclude - string (or array) to be excluded
     $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
     $timeout - timeout in seconds, defaults to 900
+    $options - default options to pass to rsync (-a)
 
 ## Actions: ##
   put files via rsync

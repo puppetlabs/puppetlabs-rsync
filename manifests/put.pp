@@ -7,9 +7,11 @@
 #   $path    - path to copy to, defaults to $name
 #   $user    - username on remote system
 #   $purge   - if set, rsync will use '--delete'
-#   $exlude  - string to be excluded
+#   $exlude  - string (or array) to be excluded
+#   $include - string (or array) to be included
 #   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
 #   $timeout - timeout in seconds, defaults to 900
+#   $options - default options to pass to rsync (-a)
 #
 # Actions:
 #   put files via rsync
@@ -30,8 +32,11 @@ define rsync::put (
   $user = undef,
   $purge = undef,
   $exclude = undef,
+  $include = undef,
+  $exclude = undef,
   $keyfile = undef,
-  $timeout = '900'
+  $timeout = '900',
+  $options = '-a'
 ) {
 
   if $keyfile {
@@ -50,7 +55,11 @@ define rsync::put (
   }
 
   if $exclude {
-    $myExclude = "--exclude=${exclude}"
+    $myExclude = join(prefix(flatten([$exclude]), '--exclude='), ' ')
+  }
+
+  if $include {
+    $myInclude = join(prefix(flatten([$include]), '--include='), ' ')
   }
 
   if $path {
@@ -59,7 +68,8 @@ define rsync::put (
     $myPath = $name
   }
 
-  $rsync_options = "-a ${myPurge} ${myExclude} ${myUserOpt}${source} ${myUser}${myPath}"
+  $rsync_options = join(
+    delete_undef_values([$options, $myPurge, $myExclude, $myInclude, $myUserOpt, $source, "${myUser}${myPath}"]), ' ')
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

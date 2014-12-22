@@ -47,6 +47,16 @@ describe 'rsync::server::module', :type => :define do
     it { is_expected.to contain_file(fragment_file).with_content(/^lock file\s*=\s*\/var\/run\/rsyncd\.lock$/) }
   end
 
+  describe "when setting incoming chmod to false" do
+    let :params do
+      mandatory_params.merge({:incoming_chmod => false,
+                              :outgoing_chmod => false,
+      })
+    end
+    it { is_expected.not_to contain_file(fragment_file).with_content(/^incoming chmod.*$/) }
+    it { is_expected.not_to contain_file(fragment_file).with_content(/^outgoing chmod.*$/) }
+  end
+
   {
     :comment        => 'super module !',
     :read_only      => 'no',

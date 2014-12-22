@@ -104,3 +104,13 @@ sets up a rsync server
       path    => $base,
       require => File[$base],
     }
+
+To disable default values for ``incoming_chmod`` and ``outgoing_chmod``, and
+do not add empty values to the resulting config, set both values to ``false``
+
+    rsync::server::module { 'repo':
+      path           => $base,
+      incoming_chmod => false,
+      outgoing_chmod => false,
+      require        => File[$base],
+    }

@@ -1,18 +1,22 @@
 require 'spec_helper'
 describe 'rsync::server', :type => :class do
-
-  let :fragment_file do
-    "/etc/rsync.d/header"
+  let(:facts) do
+    {
+      :concat_basedir => '/dne'
+    }
   end
 
   describe 'when using default params' do
     it {
-      should contain_class('xinetd')
-      should contain_xinetd__service('rsync').with({ 'bind' => '0.0.0.0' })
-      should_not contain_service('rsync')
-      should_not contain_file('/etc/rsync-motd')
-      should contain_file(fragment_file).with_content(/^use chroot\s*=\s*yes$/)
-      should contain_file(fragment_file).with_content(/^address\s*=\s*0.0.0.0$/)
+      is_expected.to contain_class('xinetd')
+      is_expected.to contain_xinetd__service('rsync').with({ 'bind' => '0.0.0.0' })
+      is_expected.not_to contain_service('rsync')
+      is_expected.not_to contain_file('/etc/rsync-motd')
+      is_expected.to contain_concat__fragment('rsyncd_conf_header').with({
+        :order => '00_header',
+      })
+      is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^use chroot\s*=\s*yes$/)
+      is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^address\s*=\s*0.0.0.0$/)
     }
   end
 
@@ -22,9 +26,9 @@ describe 'rsync::server', :type => :class do
     end
 
     it {
-      should_not contain_class('xinetd')
-      should_not contain_xinetd__service('rsync')
-      should contain_service('rsync')
+      is_expected.not_to contain_class('xinetd')
+      is_expected.not_to contain_xinetd__service('rsync')
+      is_expected.to contain_service('rsync')
     }
   end
 
@@ -34,7 +38,7 @@ describe 'rsync::server', :type => :class do
     end
 
     it {
-      should contain_file('/etc/rsync-motd')
+      is_expected.to contain_file('/etc/rsync-motd')
     }
   end
 
@@ -44,7 +48,7 @@ describe 'rsync::server', :type => :class do
     end
 
     it {
-      should contain_file(fragment_file).with_content(/^use chroot\s*=\s*no$/)
+      is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^use chroot\s*=\s*no$/)
     }
   end
 
@@ -54,7 +58,7 @@ describe 'rsync::server', :type => :class do
     end
 
     it {
-      should contain_file(fragment_file).with_content(/^address\s*=\s*10.0.0.42$/)
+      is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^address\s*=\s*10.0.0.42$/)
     }
   end
 
@@ -64,7 +68,7 @@ describe 'rsync::server', :type => :class do
     end
 
     it {
-      should contain_file(fragment_file).with_content(/^uid\s*=\s*testuser$/)
+      is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^uid\s*=\s*testuser$/)
     }
   end
 
@@ -74,7 +78,7 @@ describe 'rsync::server', :type => :class do
     end
 
     it {
-      should contain_file(fragment_file).with_content(/^gid\s*=\s*testgroup$/)
+      is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^gid\s*=\s*testgroup$/)
     }
   end
 

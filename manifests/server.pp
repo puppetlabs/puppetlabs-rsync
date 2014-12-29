@@ -20,8 +20,6 @@ class rsync::server(
     default  => '/etc/rsync.conf',
   }
 
-  $rsync_fragments = '/etc/rsync.d'
-
   if $use_xinetd {
     include xinetd
     xinetd::service { 'rsync':
@@ -37,7 +35,7 @@ class rsync::server(
       enable     => true,
       hasstatus  => true,
       hasrestart => true,
-      subscribe  => Exec['compile fragments'],
+      subscribe  => Concat[$conf_file],
     }
 
     if ( $::osfamily == 'Debian' ) {
@@ -54,30 +52,16 @@ class rsync::server(
     }
   }
 
-  file { $rsync_fragments:
-    ensure  => directory,
-  }
+  concat { $conf_file: }
 
   # Template uses:
   # - $use_chroot
   # - $address
   # - $motd_file
-  file { "${rsync_fragments}/header":
+  concat::fragment { 'rsyncd_conf_header':
+    target  => $conf_file,
     content => template('rsync/header.erb'),
+    order   => '00_header',
   }
 
-  file { $conf_file:
-    ensure => present,
-  } ~> Exec['compile fragments']
-
-  # perhaps this should be a script
-  # this allows you to only have a header and no fragments, which happens
-  # by default if you have an rsync::server but not an rsync::repo on a host
-  # which happens with cobbler systems by default
-  exec { 'compile fragments':
-    refreshonly => true,
-    command     => "ls ${rsync_fragments}/frag-* 1>/dev/null 2>/dev/null && if [ $? -eq 0 ]; then cat ${rsync_fragments}/header ${rsync_fragments}/frag-* > ${conf_file}; else cat ${rsync_fragments}/header > ${conf_file}; fi; $(exit 0)",
-    subscribe   => File["${rsync_fragments}/header"],
-    path        => '/bin:/usr/bin:/usr/local/bin',
-  }
 }

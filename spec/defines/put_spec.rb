@@ -1,12 +1,12 @@
 require 'spec_helper'
 describe 'rsync::put', :type => :define do
   let :title do
-    'foobar'
+    'example.com:foo'
   end
 
   let :common_params do
     {
-      :source => 'example.com'
+      :source => '/bar'
     }
   end
 
@@ -16,10 +16,51 @@ describe 'rsync::put', :type => :define do
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a example.com foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a example.com foobar | wc -l` -gt 0",
-        'timeout' => '900'
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        :command => 'rsync --quiet --archive /bar example.com:foo',
+        :onlyif  => "test `rsync -ni --archive /bar example.com:foo | wc -l` -gt 0",
+        :timeout => '900'
+      })
+    }
+  end
+
+  describe "when using default class paramaters with rsync proto" do
+    let :title do 'example.com::foo' end
+    let :params do common_params end
+
+    it {
+      is_expected.to contain_exec('rsync put example.com::foo').with({
+        :command => 'rsync --quiet --archive /bar example.com::foo',
+        :onlyif  => "test `rsync -ni --archive /bar example.com::foo | wc -l` -gt 0",
+        :timeout => '900'
+      })
+    }
+  end
+
+  describe "when using default class paramaters with rsync proto in URI form" do
+    let :title do 'rsync://example.com/foo' end
+    let :params do common_params end
+
+    it {
+      is_expected.to contain_exec('rsync put rsync://example.com/foo').with({
+        :command => 'rsync --quiet --archive /bar rsync://example.com/foo',
+        :onlyif  => "test `rsync -ni --archive /bar rsync://example.com/foo | wc -l` -gt 0",
+        :timeout => '900'
+      })
+    }
+  end
+
+  describe "when setting user with rsync proto in URI form" do
+    let :title do 'rsync://example.com/foo' end
+    let :params do common_params.merge({
+      :user => 'mr_baz'
+    }) end
+
+    it {
+      is_expected.to contain_exec('rsync put rsync://example.com/foo').with({
+        :command => 'rsync --quiet --archive /bar rsync://mr_baz@example.com/foo',
+        :onlyif  => "test `rsync -ni --archive /bar rsync://mr_baz@example.com/foo | wc -l` -gt 0",
+        :timeout => '900'
       })
     }
   end
@@ -30,7 +71,7 @@ describe 'rsync::put', :type => :define do
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({ 'timeout' => '200' })
+      is_expected.to contain_exec('rsync put example.com:foo').with({ 'timeout' => '200' })
     }
   end
 
@@ -40,9 +81,9 @@ describe 'rsync::put', :type => :define do
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a -e \'ssh -i /home/mr_baz/.ssh/id_rsa -l mr_baz\' example.com mr_baz@foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a -e \'ssh -i /home/mr_baz/.ssh/id_rsa -l mr_baz\' example.com mr_baz@foobar | wc -l` -gt 0",
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        'command' => 'rsync --quiet --archive /bar mr_baz@example.com:foo',
+        'onlyif'  => 'test `rsync -ni --archive /bar mr_baz@example.com:foo | wc -l` -gt 0',
       })
     }
   end
@@ -53,9 +94,9 @@ describe 'rsync::put', :type => :define do
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a example.com foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a example.com foobar | wc -l` -gt 0",
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        'command' => 'rsync --quiet --archive -e \'ssh -i /path/to/keyfile\' /bar example.com:foo',
+        'onlyif'  => "test `rsync -ni --archive -e \'ssh -i /path/to/keyfile\' /bar example.com:foo | wc -l` -gt 0",
       })
     }
   end
@@ -69,9 +110,9 @@ describe 'rsync::put', :type => :define do
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a -e \'ssh -i /path/to/keyfile -l mr_baz\' example.com mr_baz@foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a -e \'ssh -i /path/to/keyfile -l mr_baz\' example.com mr_baz@foobar | wc -l` -gt 0",
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        'command' => 'rsync --quiet --archive -e \'ssh -i /path/to/keyfile -l mr_baz\' /bar mr_baz@example.com:foo',
+        'onlyif'  => "test `rsync -ni --archive -e \'ssh -i /path/to/keyfile -l mr_baz\' /bar mr_baz@example.com:foo | wc -l` -gt 0",
        })
     }
   end
@@ -82,9 +123,9 @@ describe 'rsync::put', :type => :define do
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a --exclude=/path/to/exclude/ example.com foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --exclude=/path/to/exclude/ example.com foobar | wc -l` -gt 0",
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        'command' => 'rsync --quiet --archive --exclude=/path/to/exclude/ /bar example.com:foo',
+        'onlyif'  => "test `rsync -ni --archive --exclude=/path/to/exclude/ /bar example.com:foo | wc -l` -gt 0",
        })
     }
   end
@@ -95,9 +136,9 @@ describe 'rsync::put', :type => :define do
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a --exclude=logs/ --exclude=tmp/ example.com foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --exclude=logs/ --exclude=tmp/ example.com foobar | wc -l` -gt 0",
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        'command' => 'rsync --quiet --archive --exclude=logs/ --exclude=tmp/ /bar example.com:foo',
+        'onlyif'  => "test `rsync -ni --archive --exclude=logs/ --exclude=tmp/ /bar example.com:foo | wc -l` -gt 0",
        })
     }
   end
@@ -108,9 +149,9 @@ describe 'rsync::put', :type => :define do
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a --include=/path/to/include/ example.com foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --include=/path/to/include/ example.com foobar | wc -l` -gt 0",
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        'command' => 'rsync --quiet --archive --include=/path/to/include/ /bar example.com:foo',
+        'onlyif'  => "test `rsync -ni --archive --include=/path/to/include/ /bar example.com:foo | wc -l` -gt 0",
        })
     }
   end
@@ -121,9 +162,9 @@ describe 'rsync::put', :type => :define do
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a --include=htdocs/ --include=cache/ example.com foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --include=htdocs/ --include=cache/ example.com foobar | wc -l` -gt 0",
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        'command' => 'rsync --quiet --archive --include=htdocs/ --include=cache/ /bar example.com:foo',
+        'onlyif'  => "test `rsync -ni --archive --include=htdocs/ --include=cache/ /bar example.com:foo | wc -l` -gt 0",
        })
     }
   end
@@ -134,35 +175,35 @@ describe 'rsync::put', :type => :define do
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a --delete example.com foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --delete example.com foobar | wc -l` -gt 0"
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        'command' => 'rsync --quiet --archive --delete /bar example.com:foo',
+        'onlyif'  => "test `rsync -ni --archive --delete /bar example.com:foo | wc -l` -gt 0"
        })
     }
   end
 
   describe "when changing rsync options" do
     let :params do
-      common_params.merge({ :options => '-rlpcgoD' })
+      common_params.merge({ :options => '-rlpcgoD', :archive => false })
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -rlpcgoD example.com foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -rlpcgoD example.com foobar | wc -l` -gt 0"
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        'command' => 'rsync --quiet -rlpcgoD /bar example.com:foo',
+        'onlyif'  => "test `rsync -ni -rlpcgoD /bar example.com:foo | wc -l` -gt 0"
        })
     }
   end
 
   describe "when setting a custom path" do
     let :params do
-      common_params.merge({ :path => 'barfoo' })
+      common_params.merge({ :path => '/baz' })
     end
 
     it {
-      is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a example.com barfoo',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a example.com barfoo | wc -l` -gt 0"
+      is_expected.to contain_exec('rsync put example.com:foo').with({
+        'command' => 'rsync --quiet --archive /bar /baz',
+        'onlyif'  => "test `rsync -ni --archive /bar /baz | wc -l` -gt 0"
        })
     }
   end

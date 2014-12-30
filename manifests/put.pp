@@ -9,7 +9,8 @@
 #   $purge   - if set, rsync will use '--delete'
 #   $exlude  - string (or array) to be excluded
 #   $include - string (or array) to be included
-#   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+#   $keyfile - path to ssh key used to connect to remote host,
+#              defaults to /home/${user}/.ssh/id_rsa
 #   $timeout - timeout in seconds, defaults to 900
 #   $options - default options to pass to rsync (-a)
 #
@@ -21,66 +22,59 @@
 #
 # Sample Usage:
 #
-#  rsync::put { '${rsyncDestHost}:/repo/foo':
+#  rsync::put { "${rsyncDestHost}:/repo/foo":
 #    user    => 'user',
 #    source  => "/repo/foo/",
-#  } # rsync
+#  }
 #
 define rsync::put (
   $source,
-  $path = undef,
-  $user = undef,
-  $purge = undef,
-  $exclude = undef,
-  $include = undef,
-  $exclude = undef,
-  $keyfile = undef,
-  $timeout = '900',
-  $options = '-a'
+  $archive   = true,
+  $chown     = undef,
+  $copylinks = false,
+  $exclude   = undef,
+  $execpath  = undef,
+  $execuser  = 'root',
+  $hardlinks = false,
+  $include   = undef,
+  $keyfile   = undef,
+  $links     = false,
+  $options   = undef,
+  $path      = $name,
+  $purge     = false,
+  $onlyif    = undef,
+  $recursive = false,
+  $rsh       = undef,
+  $timeout   = '900',
+  $times     = false,
+  $user      = undef,
 ) {
+  validate_re($path,[
+    '^/',            # local filesystem
+    '(\b):[^:\b\B]', # ssh protocol
+    '^rsync://',     # rsync protocol
+    '::',            # rsync protocol
+  ])
+  validate_absolute_path($source)
 
-  if $keyfile {
-    $Mykeyfile = $keyfile
-  } else {
-    $Mykeyfile = "/home/${user}/.ssh/id_rsa"
-  }
-
-  if $user {
-    $MyUserOpt = "-e 'ssh -i ${Mykeyfile} -l ${user}'"
-    $MyUser = "${user}@"
-  }
-
-  if $purge {
-    $MyPurge = '--delete'
-  }
-
-  if $exclude {
-    $MyExclude = join(prefix(flatten([$exclude]), '--exclude='), ' ')
-  }
-
-  if $include {
-    $MyInclude = join(prefix(flatten([$include]), '--include='), ' ')
-  }
-
-  if $path {
-    $MyPath = $path
-  } else {
-    $MyPath = $name
-  }
-
-  $rsync_options = join(
-    delete_undef_values([$options, $MyPurge, $MyExclude, $MyInclude, $MyUserOpt, $source, "${MyUser}${MyPath}"]), ' ')
-
-  exec { "rsync ${name}":
-    command => "rsync -q ${rsync_options}",
-    path    => [ '/bin', '/usr/bin' ],
-    # perform a dry-run to determine if anything needs to be updated
-    # this ensures that we only actually create a Puppet event if something needs to
-    # be updated
-    # TODO - it may make senes to do an actual run here (instead of a dry run)
-    #        and relace the command with an echo statement or something to ensure
-    #        that we only actually run rsync once
-    onlyif  => "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0",
-    timeout => $timeout,
+  rsync::exec { "put ${name}":
+    archive   => $archive,
+    chown     => $chown,
+    copylinks => $copylinks,
+    exclude   => $exclude,
+    execuser  => $execuser,
+    hardlinks => $hardlinks,
+    include   => $include,
+    keyfile   => $keyfile,
+    links     => $links,
+    onlyif    => $onlyif,
+    options   => $options,
+    path      => $path,
+    purge     => $purge,
+    recursive => $recursive,
+    source    => $source,
+    timeout   => $timeout,
+    times     => $times,
+    user      => $user,
   }
 }

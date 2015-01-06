@@ -34,6 +34,7 @@
 #
 define rsync::server::module (
   $path,
+  $order           = "10_${name}",
   $comment         = undef,
   $read_only       = 'yes',
   $write_only      = 'no',
@@ -50,8 +51,9 @@ define rsync::server::module (
   $hosts_allow     = undef,
   $hosts_deny      = undef)  {
 
-  file { "${rsync::server::rsync_fragments}/frag-${name}":
+  concat::fragment { "frag-${name}":
     content => template('rsync/module.erb'),
-    notify  => Exec['compile fragments'],
+    target  => $rsync::server::conf_file,
+    order   => $order,
   }
 }

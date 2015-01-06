@@ -19,6 +19,10 @@
     {
       "name": "puppetlabs/xinetd",
       "version_requirement": ">=1.1.0"
+    },
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 1.1.1"
     }
   ]
 }

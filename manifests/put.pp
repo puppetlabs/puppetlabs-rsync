@@ -40,36 +40,36 @@ define rsync::put (
 ) {
 
   if $keyfile {
-    $Mykeyfile = $keyfile
+    $myKeyfile = $keyfile
   } else {
-    $Mykeyfile = "/home/${user}/.ssh/id_rsa"
+    $myKeyfile = "/home/${user}/.ssh/id_rsa"
   }
 
   if $user {
-    $MyUserOpt = "-e 'ssh -i ${Mykeyfile} -l ${user}'"
-    $MyUser = "${user}@"
+    $myUserOpt = "-e 'ssh -i ${myKeyfile} -l ${user}'"
+    $myUser = "${user}@"
   }
 
   if $purge {
-    $MyPurge = '--delete'
+    $myPurge = '--delete'
   }
 
   if $exclude {
-    $MyExclude = join(prefix(flatten([$exclude]), '--exclude='), ' ')
+    $myExclude = join(prefix(flatten([$exclude]), '--exclude='), ' ')
   }
 
   if $include {
-    $MyInclude = join(prefix(flatten([$include]), '--include='), ' ')
+    $myInclude = join(prefix(flatten([$include]), '--include='), ' ')
   }
 
   if $path {
-    $MyPath = $path
+    $myPath = $path
   } else {
-    $MyPath = $name
+    $myPath = $name
   }
 
   $rsync_options = join(
-    delete_undef_values([$options, $MyPurge, $MyExclude, $MyInclude, $MyUserOpt, $source, "${MyUser}${MyPath}"]), ' ')
+    delete_undef_values([$options, $myPurge, $myExclude, $myInclude, $myUserOpt, $source, "${myUser}${myPath}"]), ' ')
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",
@@ -84,3 +84,4 @@ define rsync::put (
     timeout => $timeout,
   }
 }
+

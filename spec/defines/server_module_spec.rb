@@ -59,8 +59,8 @@ describe 'rsync::server::module', :type => :define do
                               :outgoing_chmod => false,
       })
     end
-    it { is_expected.not_to contain_file(fragment_file).with_content(/^incoming chmod.*$/) }
-    it { is_expected.not_to contain_file(fragment_file).with_content(/^outgoing chmod.*$/) }
+    it { is_expected.not_to contain_file(fragment_name).with_content(/^incoming chmod.*$/) }
+    it { is_expected.not_to contain_file(fragment_name).with_content(/^outgoing chmod.*$/) }
   end
 
   {

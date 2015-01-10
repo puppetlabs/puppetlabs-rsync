@@ -36,3 +36,6 @@ hosts deny      = <%= @hosts_deny.to_a.join(' ')%>
 <% if @exclude -%>
 exclude         = <%= @exclude.to_a.join(' ')%>
 <% end -%>
+<% if @refuse_options -%>
+refuse options  = <%= @refuse_options.to_a.join(' ')%>
+<% end -%>

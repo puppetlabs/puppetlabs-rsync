@@ -43,6 +43,7 @@ describe 'rsync::server::module', :type => :define do
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^auth users\s*=.*$/) }
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^hosts allow\s*=.*$/) }
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^hosts deny\s*=.*$/) }
+    it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^refuse options\s*=.*$/) }
   end
 
   describe "when overriding max connections" do
@@ -74,7 +75,8 @@ describe 'rsync::server::module', :type => :define do
     :outgoing_chmod => '0777',
     :secrets_file   => '/path/to/secrets',
     :hosts_allow    => ['localhost', '169.254.42.51'],
-    :hosts_deny     => ['some-host.example.com', '10.0.0.128']
+    :hosts_deny     => ['some-host.example.com', '10.0.0.128'],
+    :refuse_options => ['c', 'delete']
   }.each do |k,v|
     describe "when overriding #{k}" do
       let :params do

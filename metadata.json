@@ -1,28 +1,15 @@
 {
   "name": "puppetlabs-rsync",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "author": "puppetlabs",
   "summary": "Manages rsync clients, repositories, and servers, & providies defines to easily grab data via rsync.",
-  "license": "Apache License, Version 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/puppetlabs/puppetlabs-rsync",
   "project_page": "https://github.com/puppetlabs/puppetlabs-rsync",
-  "issues_url": "https://github.com/puppetlabs/puppetlabs-rsync/issues",
-  "types": [
-  
-  ],
-  "description": "Module to install and configure RSync",
+  "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
   "dependencies": [
-    {
-      "name": "puppetlabs/stdlib",
-      "version_requirement": ">=2.2.1"
-    },
-    {
-      "name": "puppetlabs/xinetd",
-      "version_requirement": ">=1.1.0"
-    },
-    {
-      "name": "puppetlabs/concat",
-      "version_requirement": ">= 1.1.1"
-    }
+    {"name":"puppetlabs/stdlib","version_requirement":">=2.2.1"},
+    {"name":"puppetlabs/xinetd","version_requirement":">=1.1.0"},
+    {"name":"puppetlabs/concat","version_requirement":">= 1.1.1"}
   ]
 }

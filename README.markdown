@@ -97,6 +97,8 @@ sets up a rsync server
     $auth_users      - list of usernames that will be allowed to connect to this module (must be undef or an array)
     $hosts_allow     - list of patterns allowed to connect to this module (man 5 rsyncd.conf for details, must be undef or an array)
     $hosts_deny      - list of patterns allowed to connect to this module (man 5 rsyncd.conf for details, must be undef or an array)
+    $transfer_logging - parameter enables per-file logging of downloads and uploads in a format somewhat similar to that used by ftp daemons.
+    $log_format       - This parameter allows you to specify the format used for logging file transfers when transfer logging is enabled. See the rsyncd.conf documentation for more details.
     $refuse_options  - list of rsync command line options that will be refused by your rsync daemon.
 
 ## Actions: ##

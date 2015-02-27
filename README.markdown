@@ -9,6 +9,7 @@ Manage rsync package
 
 ## Parameters: ##
     $package_ensure - any of the valid values for the package resource: present, absent, purged, held, latest
+    $manage_package - setting this to false stops the rsync package resource from being managed
 
 ## Sample Usage: ##
     class { 'rsync': package_ensure => 'latest' }

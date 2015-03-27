@@ -25,16 +25,16 @@ comment          = <%= @comment %>
 secrets file     = <%= @secrets_file %>
 <% end -%>
 <% if @auth_users -%>
-auth users       = <%= @auth_users.to_a.join(', ')%>
+auth users       = <%= Array(@auth_users).join(', ')%>
 <% end -%>
 <% if @hosts_allow -%>
-hosts allow      = <%= @hosts_allow.to_a.join(' ')%>
+hosts allow      = <%= Array(@hosts_allow).join(' ')%>
 <% end -%>
 <% if @hosts_deny -%>
-hosts deny       = <%= @hosts_deny.to_a.join(' ')%>
+hosts deny       = <%= Array(@hosts_deny).join(' ')%>
 <% end -%>
 <% if @exclude -%>
-exclude          = <%= @exclude.to_a.join(' ')%>
+exclude          = <%= Array(@exclude).join(' ')%>
 <% end -%>
 <% if @transfer_logging -%>
 transfer logging = <%= @transfer_logging %>
@@ -43,5 +43,5 @@ transfer logging = <%= @transfer_logging %>
 log format       = <%= @log_format %>
 <% end -%>
 <% if @refuse_options -%>
-refuse options   = <%= @refuse_options.to_a.join(' ')%>
+refuse options   = <%= Array(@refuse_options).join(' ')%>
 <% end -%>

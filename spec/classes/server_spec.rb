@@ -82,4 +82,19 @@ describe 'rsync::server', :type => :class do
     }
   end
 
+  describe 'on SuSE, use_xinetd => false' do
+    let(:params) do
+      {
+        :use_xinetd => false,
+      }
+    end
+    let(:facts) do
+      {
+        :osfamily => 'SuSE',
+        :concat_basedir => '/dne',
+      }
+    end
+
+    it{ is_expected.to contain_service('rsyncd') }
+  end
 end

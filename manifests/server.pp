@@ -17,7 +17,12 @@ class rsync::server(
 
   $conf_file = $::osfamily ? {
     'Debian' => '/etc/rsyncd.conf',
+    'suse'   => '/etc/rsyncd.conf',
     default  => '/etc/rsync.conf',
+  }
+  $servicename = $::osfamily ? {
+    'suse'  => 'rsyncd',
+    default => 'rsync',
   }
 
   if $use_xinetd {
@@ -30,7 +35,7 @@ class rsync::server(
       require     => Package['rsync'],
     }
   } else {
-    service { 'rsync':
+    service { $servicename:
       ensure     => running,
       enable     => true,
       hasstatus  => true,

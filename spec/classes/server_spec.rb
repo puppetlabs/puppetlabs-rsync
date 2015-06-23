@@ -97,4 +97,20 @@ describe 'rsync::server', :type => :class do
 
     it{ is_expected.to contain_service('rsyncd') }
   end
+
+  describe 'on Red Hat, use_xinetd => false' do
+    let(:params) do
+      {
+        :use_xinetd => false,
+      }
+    end
+    let(:facts) do
+      {
+        :osfamily => 'RedHat',
+        :concat_basedir => '/dne',
+      }
+    end
+
+    it{ is_expected.to contain_service('rsyncd') }
+  end
 end

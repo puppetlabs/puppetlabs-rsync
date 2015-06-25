@@ -36,6 +36,8 @@ get files via rsync
     $execuser      - user to run the command (passed to exec)
     $options       - default options to pass to rsync (-a)
     $chown         - USER:GROUP simple username/groupname mapping
+    $chmod         - file and/or directory permissions
+    $logfile       - log file name
     $onlyif        - condition to run the rsync command
 
 ## Actions: ##

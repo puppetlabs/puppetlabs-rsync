@@ -280,4 +280,43 @@ describe 'rsync::get', :type => :define do
     }
   end
 
+  describe "when setting chown" do
+    let :params do
+      common_params.merge({ :chown => 'user:group' })
+    end
+
+    it {
+      is_expected.to contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --chown=user:group foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --chown=user:group foobar | wc -l` -gt 0"
+       })
+    }
+  end
+
+  describe "when setting chmod" do
+    let :params do
+      common_params.merge({ :chmod => 'Dg-s,u+w,go-w,+X,+x' })
+    end
+
+    it {
+      is_expected.to contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --chmod=Dg-s,u+w,go-w,+X,+x foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --chmod=Dg-s,u+w,go-w,+X,+x foobar | wc -l` -gt 0"
+       })
+    }
+  end
+
+  describe "when setting logfile" do
+    let :params do
+      common_params.merge({ :logfile => '/tmp/logfile.out' })
+    end
+
+    it {
+      is_expected.to contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --log-file=/tmp/logfile.out foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --log-file=/tmp/logfile.out foobar | wc -l` -gt 0"
+       })
+    }
+  end
+
 end

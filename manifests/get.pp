@@ -44,6 +44,8 @@ define rsync::get (
   $execuser   = 'root',
   $options    = '-a',
   $chown      = undef,
+  $chmod      = undef,
+  $logfile    = undef,
   $onlyif     = undef,
 ) {
 
@@ -93,8 +95,16 @@ define rsync::get (
     $myChown = "--chown=${chown}"
   }
 
+  if $chmod {
+    $myChmod = "--chmod=${chmod}"
+  }
+
+  if $logfile {
+    $myLogfile = "--log-file=${logfile}"
+  }
+
   $rsync_options = join(
-    delete_undef_values([$options, $myPurge, $myExclude, $myInclude, $myLinks, $myHardLinks, $myCopyLinks, $myTimes, $myRecursive, $myChown, "${myUser}${source}", $path]), ' ')
+    delete_undef_values([$options, $myPurge, $myExclude, $myInclude, $myLinks, $myHardLinks, $myCopyLinks, $myTimes, $myRecursive, $myChown, $myChmod, $myLogfile, "${myUser}${source}", $path]), ' ')
 
   if !$onlyif {
     $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"

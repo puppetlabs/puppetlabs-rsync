@@ -58,7 +58,7 @@ define rsync::server::module (
   $hosts_deny         = undef,
   $transfer_logging   = undef,
   $log_format         = undef,
-  $refuse_options     = undef
+  $refuse_options     = undef,
   $ignore_nonreadable = undef)  {
 
   concat::fragment { "frag-${name}":

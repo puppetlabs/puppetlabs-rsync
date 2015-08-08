@@ -101,6 +101,7 @@ sets up a rsync server
     $transfer_logging - parameter enables per-file logging of downloads and uploads in a format somewhat similar to that used by ftp daemons.
     $log_format       - This parameter allows you to specify the format used for logging file transfers when transfer logging is enabled. See the rsyncd.conf documentation for more details.
     $refuse_options  - list of rsync command line options that will be refused by your rsync daemon.
+    $ignore_nonreadable - This  tells  the  rsync daemon to completely ignore files that are not readable by the user.
 
 ## Actions: ##
   sets up an rsync server

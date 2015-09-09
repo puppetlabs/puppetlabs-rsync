@@ -29,7 +29,7 @@ class rsync::server(
     include xinetd
     xinetd::service { 'rsync':
       bind        => $address,
-      port        => '873',
+      dport       => '873',
       server      => '/usr/bin/rsync',
       server_args => "--daemon --config ${conf_file}",
       require     => Package['rsync'],

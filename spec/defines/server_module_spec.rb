@@ -97,5 +97,11 @@ describe 'rsync::server::module', :type => :define do
     it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^auth users\s*=\s*me, you, them$/)}
   end
 
+  describe "when overriding log_file" do
+    let :params do
+      mandatory_params.merge({ :log_file => '/var/log/rsync.log' })
+    end
+    it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^log file\s*=\s*\/var\/log\/rsync.log$/)}
+  end
 end
 

@@ -45,3 +45,6 @@ log format       = <%= @log_format %>
 <% if @refuse_options -%>
 refuse options   = <%= Array(@refuse_options).join(' ')%>
 <% end -%>
+<% if @log_file -%>
+log file = <%= @log_file %>
+<% end -%>

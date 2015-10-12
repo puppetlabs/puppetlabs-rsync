@@ -22,8 +22,9 @@ class rsync::server(
     default  => '/etc/rsync.conf',
   }
   $servicename = $::osfamily ? {
-    'suse'  => 'rsyncd',
-    default => 'rsync',
+    'RedHat' => 'rsyncd',
+    'suse'   => 'rsyncd',
+    default  => 'rsync',
   }
 
   if $use_xinetd {

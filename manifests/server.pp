@@ -17,12 +17,14 @@ class rsync::server(
 
   $conf_file = $::osfamily ? {
     'Debian' => '/etc/rsyncd.conf',
+    'RedHat' => '/etc/rsyncd.conf',
     'suse'   => '/etc/rsyncd.conf',
     default  => '/etc/rsync.conf',
   }
   $servicename = $::osfamily ? {
-    'suse'  => 'rsyncd',
-    default => 'rsync',
+    'RedHat' => 'rsyncd',
+    'suse'   => 'rsyncd',
+    default  => 'rsync',
   }
 
   if $use_xinetd {

@@ -124,3 +124,16 @@ do not add empty values to the resulting config, set both values to ``false``
       outgoing_chmod => false,
       require        => File[$base],
     }
+
+# Configuring via Hiera #
+``rsync::put``, ``rsync::get``, and ``rsync::server::module`` resources can be
+configured using Hiera hashes. For example:
+
+    rsync::server::modules:
+      myrepo:
+        path: /mypath
+        incoming_chmod: false
+        outgoing_chmod: false
+      myotherrepo:
+        path: /otherpath
+        read_only: false

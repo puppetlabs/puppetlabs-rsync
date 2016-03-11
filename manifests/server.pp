@@ -12,7 +12,8 @@ class rsync::server(
   $motd_file  = 'UNSET',
   $use_chroot = 'yes',
   $uid        = 'nobody',
-  $gid        = 'nobody'
+  $gid        = 'nobody',
+  $modules    = {},
 ) inherits rsync {
 
   $conf_file = $::osfamily ? {
@@ -68,5 +69,7 @@ class rsync::server(
     content => template('rsync/header.erb'),
     order   => '00_header',
   }
+
+  create_resources(rsync::server::module, $modules)
 
 }

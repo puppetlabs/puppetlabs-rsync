@@ -4,7 +4,9 @@
 #
 class rsync(
   $package_ensure    = 'installed',
-  $manage_package    = true
+  $manage_package    = true,
+  $puts              = {},
+  $gets              = {},
 ) {
 
   if $manage_package {
@@ -12,4 +14,7 @@ class rsync(
       ensure => $package_ensure,
     } -> Rsync::Get<| |>
   }
+
+  create_resources(rsync::put, $puts)
+  create_resources(rsync::get, $gets)
 }

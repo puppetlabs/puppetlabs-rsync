@@ -19,23 +19,24 @@ Manage rsync package
 get files via rsync
 
 ## Parameters: ##
-    $source     - source to copy from
-    $path       - path to copy to, defaults to $name
-    $user       - username on remote system
-    $purge      - if set, rsync will use '--delete'
-    $recursive  - if set, rsync will use '-r'
-    $links      - if set, rsync will use '--links'
-    $hardlinks  - if set, rsync will use '--hard-links'
-    $copylinks  - if set, rsync will use '--copy-links'
-    $times      - if set, rsync will use '--times'
-    $include    - string (or array) to be included
-    $exclude    - string (or array) to be excluded
-    $keyfile    - ssh key used to connect to remote host
-    $timeout    - timeout in seconds, defaults to 900
-    $execuser   - user to run the command (passed to exec)
-    $options    - default options to pass to rsync (-a)
-    $chown      - USER:GROUP simple username/groupname mapping
-    $onlyif     - condition to run the rsync command
+    $source        - source to copy from
+    $path          - path to copy to, defaults to $name
+    $user          - username on remote system
+    $purge         - if set, rsync will use '--delete'
+    $recursive     - if set, rsync will use '-r'
+    $links         - if set, rsync will use '--links'
+    $hardlinks     - if set, rsync will use '--hard-links'
+    $copylinks     - if set, rsync will use '--copy-links'
+    $times         - if set, rsync will use '--times'
+    $exclude       - string (or array) to be excluded
+    $include       - string (or array) to be included
+    $exclude_first - if 'true' (default) then first exclude and then include; the other way around if 'false'
+    $keyfile       - ssh key used to connect to remote host
+    $timeout       - timeout in seconds, defaults to 900
+    $execuser      - user to run the command (passed to exec)
+    $options       - default options to pass to rsync (-a)
+    $chown         - USER:GROUP simple username/groupname mapping
+    $onlyif        - condition to run the rsync command
 
 ## Actions: ##
   get files via rsync
@@ -55,15 +56,16 @@ get files via rsync
 put files via rsync
 
 ## Parameters: ##
-    $source  - source to copy from
-    $path    - path to copy to, defaults to $name
-    $user    - username on remote system
-    $purge   - if set, rsync will use '--delete'
-    $include - string (or array) to be included
-    $exclude - string (or array) to be excluded
-    $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
-    $timeout - timeout in seconds, defaults to 900
-    $options - default options to pass to rsync (-a)
+    $source        - source to copy from
+    $path          - path to copy to, defaults to $name
+    $user          - username on remote system
+    $purge         - if set, rsync will use '--delete'
+    $exclude       - string (or array) to be excluded
+    $include       - string (or array) to be included
+    $exclude_first - if 'true' (default) then first exclude and then include; the other way around if 'false'
+    $keyfile       - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+    $timeout       - timeout in seconds, defaults to 900
+    $options       - default options to pass to rsync (-a)
 
 ## Actions: ##
   put files via rsync

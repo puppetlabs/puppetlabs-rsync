@@ -3,16 +3,17 @@
 # get files via rsync
 #
 # Parameters:
-#   $source  - source to copy from
-#   $path    - path to copy to, defaults to $name
-#   $user    - username on remote system
-#   $purge   - if set, rsync will use '--delete'
-#   $exlude  - string (or array) to be excluded
-#   $include - string (or array) to be included
-#   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
-#   $timeout - timeout in seconds, defaults to 900
-#   $options - default options to pass to rsync (-a)
-#   $onlyif  - Condition to run the rsync command
+#   $source        - source to copy from
+#   $path          - path to copy to, defaults to $name
+#   $user          - username on remote system
+#   $purge         - if set, rsync will use '--delete'
+#   $exlude        - string (or array) to be excluded
+#   $include       - string (or array) to be included
+#   $exclude_first - if 'true' (default) then first exclude and then include; the other way around if 'false'
+#   $keyfile       - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+#   $timeout       - timeout in seconds, defaults to 900
+#   $options       - default options to pass to rsync (-a)
+#   $onlyif        - Condition to run the rsync command
 #
 # Actions:
 #   get files via rsync
@@ -29,22 +30,23 @@
 #
 define rsync::get (
   $source,
-  $path       = $name,
-  $user       = undef,
-  $purge      = undef,
-  $recursive  = undef,
-  $links      = undef,
-  $hardlinks  = undef,
-  $copylinks  = undef,
-  $times      = undef,
-  $include    = undef,
-  $exclude    = undef,
-  $keyfile    = undef,
-  $timeout    = '900',
-  $execuser   = 'root',
-  $options    = '-a',
-  $chown      = undef,
-  $onlyif     = undef,
+  $path          = $name,
+  $user          = undef,
+  $purge         = undef,
+  $recursive     = undef,
+  $links         = undef,
+  $hardlinks     = undef,
+  $copylinks     = undef,
+  $times         = undef,
+  $exclude       = undef,
+  $include       = undef,
+  $exclude_first = true,
+  $keyfile       = undef,
+  $timeout       = '900',
+  $execuser      = 'root',
+  $options       = '-a',
+  $chown         = undef,
+  $onlyif        = undef,
 ) {
 
   if $keyfile {
@@ -113,8 +115,17 @@ define rsync::get (
     $myChown = undef
   }
 
+  if $include or $exclude {
+    if $exclude_first {
+      $excludeAndInclude = join(delete_undef_values([$myExclude, $myInclude]), ' ')
+    } else {
+      $excludeAndInclude = join(delete_undef_values([$myInclude, $myExclude]), ' ')
+    }
+  }
+
   $rsync_options = join(
-    delete_undef_values([$options, $myPurge, $myExclude, $myInclude, $myLinks, $myHardLinks, $myCopyLinks, $myTimes, $myRecursive, $myChown, "${myUser}${source}", $path]), ' ')
+    delete_undef_values([$options, $myPurge, $excludeAndInclude, $myLinks, $myHardLinks, $myCopyLinks, $myTimes,
+      $myRecursive, $myChown, "${myUser}${source}", $path]), ' ')
 
   if !$onlyif {
     $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"

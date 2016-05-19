@@ -3,13 +3,15 @@
 # put files via rsync
 #
 # Parameters:
-#   $source  - source to copy from
-#   $path    - path to copy to, defaults to $name
-#   $user    - username on remote system
-#   $purge   - if set, rsync will use '--delete'
-#   $exlude  - string to be excluded
-#   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
-#   $timeout - timeout in seconds, defaults to 900
+#   $source        - source to copy from
+#   $path          - path to copy to, defaults to $name
+#   $user          - username on remote system
+#   $purge         - if set, rsync will use '--delete'
+#   $exlude        - string (or array) to be excluded
+#   $include       - string (or array) to be included
+#   $exclude_first - if 'true' then first exclude and then include; the other way around if 'false'
+#   $keyfile       - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+#   $timeout       - timeout in seconds, defaults to 900
 #
 # Actions:
 #   put files via rsync
@@ -26,14 +28,15 @@
 #
 define rsync::put (
   $source,
-  $path = undef,
-  $user = undef,
-  $purge = undef,
-  $exclude = undef,
-  $include = undef,
-  $keyfile = undef,
-  $timeout = '900',
-  $options = '-a'
+  $path          = undef,
+  $user          = undef,
+  $purge         = undef,
+  $exclude       = undef,
+  $include       = undef,
+  $exclude_first = true,
+  $keyfile       = undef,
+  $timeout       = '900',
+  $options       = '-a'
 ) {
 
   if $keyfile {
@@ -59,6 +62,14 @@ define rsync::put (
     $myInclude = join(prefix(flatten([$include]), '--include='), ' ')
   }
 
+  if $include or $exclude {
+    if $exclude_first {
+      $excludeAndInclude = join(delete_undef_values([$myExclude, $myInclude]), ' ')
+    } else {
+      $excludeAndInclude = join(delete_undef_values([$myInclude, $myExclude]), ' ')
+    }
+  }
+
   if $path {
     $myPath = $path
   } else {
@@ -66,7 +77,7 @@ define rsync::put (
   }
 
   $rsync_options = join(
-    delete_undef_values([$options, $myPurge, $myExclude, $myInclude, $myUserOpt, $source, "${myUser}${myPath}"]), ' ')
+    delete_undef_values([$options, $myPurge, $excludeAndInclude, $myUserOpt, $source, "${myUser}${myPath}"]), ' ')
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

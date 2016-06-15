@@ -25,6 +25,7 @@
 #    for logging file transfers when transfer logging is enabled. See the 
 #    rsyncd.conf documentation for more details.
 #   $refuse_options   - list of rsync command line options that will be refused by your rsync daemon.
+#   $filter           - space-separated list of daemon filter rules
 #
 #   sets up an rsync server
 #
@@ -58,7 +59,9 @@ define rsync::server::module (
   $hosts_deny       = undef,
   $transfer_logging = undef,
   $log_format       = undef,
-  $refuse_options   = undef)  {
+  $refuse_options   = undef,
+  $filter           = undef,
+) {
 
   concat::fragment { "frag-${name}":
     content => template('rsync/module.erb'),

@@ -46,6 +46,7 @@ describe 'rsync::server::module', :type => :define do
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^transfer logging\s*=.*$/) }
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^log format\s*=.*$/) }
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^refuse options\s*=.*$/) }
+    it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^filter\s*=.*$/) }
   end
 
   describe "when overriding max connections" do
@@ -80,7 +81,8 @@ describe 'rsync::server::module', :type => :define do
     :hosts_deny       => ['some-host.example.com', '10.0.0.128'],
     :transfer_logging => 'true',
     :log_format       => '%t %a %m %f %b',
-    :refuse_options   => ['c', 'delete']
+    :refuse_options   => ['c', 'delete'],
+    :filter           => 'filterstring',
   }.each do |k,v|
     describe "when overriding #{k}" do
       let :params do

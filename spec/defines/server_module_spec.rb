@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'rsync::server::module', :type => :define do
   let :facts do
     {
+      :osfamily => 'Debian',
       :concat_basedir => '/dne'
     }
   end
@@ -35,8 +36,8 @@ describe 'rsync::server::module', :type => :define do
     it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^list\s*=\s*yes$/) }
     it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^uid\s*=\s*0$/) }
     it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^gid\s*=\s*0$/) }
-    it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^incoming chmod\s*=\s*0644$/) }
-    it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^outgoing chmod\s*=\s*0644$/) }
+    it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^incoming chmod.*$/) }
+    it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^outgoing chmod.*$/) }
     it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^max connections\s*=\s*0$/) }
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^lock file\s*=.*$/) }
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^secrets file\s*=.*$/) }
@@ -56,14 +57,14 @@ describe 'rsync::server::module', :type => :define do
     it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^lock file\s*=\s*\/var\/run\/rsyncd\.lock$/) }
   end
 
-  describe "when setting incoming chmod to false" do
+  describe "when setting chmods to 755" do
     let :params do
-      mandatory_params.merge({:incoming_chmod => false,
-                              :outgoing_chmod => false,
+      mandatory_params.merge({:incoming_chmod => '0755',
+                              :outgoing_chmod => '0755',
       })
     end
-    it { is_expected.not_to contain_file(fragment_name).with_content(/^incoming chmod.*$/) }
-    it { is_expected.not_to contain_file(fragment_name).with_content(/^outgoing chmod.*$/) }
+    it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^incoming chmod\s+=\s+0755$/) }
+    it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^outgoing chmod\s+=\s+0755$/) }
   end
 
   {
@@ -98,4 +99,3 @@ describe 'rsync::server::module', :type => :define do
   end
 
 end
-

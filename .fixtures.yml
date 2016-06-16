@@ -1,6 +1,6 @@
 fixtures:
   repositories:
-    "xinetd": "git://github.com/ghoneycutt/puppet-xinetd"
+    "xinetd": "git://github.com/puppetlabs/puppetlabs-xinetd"
     "concat": "git://github.com/puppetlabs/puppetlabs-concat"
     "stdlib": "git://github.com/puppetlabs/puppetlabs-stdlib"
   symlinks:

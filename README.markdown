@@ -55,15 +55,17 @@ get files via rsync
 put files via rsync
 
 ## Parameters: ##
-    $source  - source to copy from
-    $path    - path to copy to, defaults to $name
-    $user    - username on remote system
-    $purge   - if set, rsync will use '--delete'
-    $include - string (or array) to be included
-    $exclude - string (or array) to be excluded
-    $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
-    $timeout - timeout in seconds, defaults to 900
-    $options - default options to pass to rsync (-a)
+    $source    - source to copy from
+    $path      - path to copy to, defaults to $name
+    $user      - username on remote system
+    $purge     - if set, rsync will use '--delete'
+    $include   - string (or array) to be included
+    $exclude   - string (or array) to be excluded
+    $keyfile   - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+    $timeout   - timeout in seconds, defaults to 900
+    $execuser  - user to run the command (passed to exec)
+    $options   - default options to pass to rsync (-a)
+    $onlyif    - condition to run the rsync command
 
 ## Actions: ##
   put files via rsync

@@ -3,16 +3,17 @@
 # get files via rsync
 #
 # Parameters:
-#   $source  - source to copy from
-#   $path    - path to copy to, defaults to $name
-#   $user    - username on remote system
-#   $purge   - if set, rsync will use '--delete'
-#   $exlude  - string (or array) to be excluded
-#   $include - string (or array) to be included
-#   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
-#   $timeout - timeout in seconds, defaults to 900
-#   $options - default options to pass to rsync (-a)
-#   $onlyif  - Condition to run the rsync command
+#   $source   - source to copy from
+#   $path     - path to copy to, defaults to $name
+#   $user     - username on remote system
+#   $purge    - if set, rsync will use '--delete'
+#   $exlude   - string (or array) to be excluded
+#   $include  - string (or array) to be included
+#   $keyfile  - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+#   $timeout  - timeout in seconds, defaults to 900
+#   $execuser - user to run the command (passed to exec)
+#   $options  - default options to pass to rsync (-a)
+#   $onlyif   - Condition to run the rsync command
 #
 # Actions:
 #   get files via rsync
@@ -41,7 +42,7 @@ define rsync::get (
   $exclude    = undef,
   $keyfile    = undef,
   $timeout    = '900',
-  $execuser   = 'root',
+  $execuser   = undef,
   $options    = '-a',
   $chown      = undef,
   $onlyif     = undef,

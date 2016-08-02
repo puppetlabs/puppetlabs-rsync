@@ -123,6 +123,14 @@ define rsync::get (
     $myLogfile = "--log-file=${logfile}"
   }
 
+  if $chmod {
+    $myChmod = "--chmod=${chmod}"
+  }
+
+  if $logfile {
+    $myLogfile = "--log-file=${logfile}"
+  }
+
   $rsync_options = join(
     delete_undef_values([$options, $myPurge, $myExclude, $myInclude, $myLinks, $myHardLinks, $myCopyLinks, $myTimes, $myRecursive, $myChown, $myChmod, $myLogfile, "${myUser}${source}", $path]), ' ')
 

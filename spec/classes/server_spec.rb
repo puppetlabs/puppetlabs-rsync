@@ -65,7 +65,7 @@ describe 'rsync::server', :type => :class do
 
   describe 'when overriding port' do
     let :params do
-      { :address => '2001' }
+      { :port => '2001' }
     end
 
     it {

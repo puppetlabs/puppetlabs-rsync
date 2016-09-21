@@ -1,7 +1,10 @@
 fixtures:
-  repositories:
-    "xinetd": "git://github.com/ghoneycutt/puppet-xinetd"
-    "concat": "git://github.com/puppetlabs/puppetlabs-concat"
-    "stdlib": "git://github.com/puppetlabs/puppetlabs-stdlib"
+  forge_modules:
+    xinetd:
+      repo: 'puppetlabs/xinetd'
+    concat:
+      repo: 'puppetlabs/concat'
+    stdlib:
+      repo: 'puppetlabs/stdlib'
   symlinks:
     "rsync": "#{source_dir}"

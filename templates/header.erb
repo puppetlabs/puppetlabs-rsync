@@ -9,6 +9,7 @@ log format = %t %a %m %f %b
 syslog facility = local3
 timeout = 300
 address = <%= @address %>
+port = <%= @port %>
 <% if @motd_file != 'UNSET' -%>
 motd file = <%= @motd_file %>
 <% end -%>

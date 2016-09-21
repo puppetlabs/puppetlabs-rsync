@@ -13,6 +13,7 @@ class rsync::server(
   $use_chroot = 'yes',
   $uid        = 'nobody',
   $gid        = 'nobody',
+  $port       = '873',
   $modules    = {},
 ) inherits rsync {
 
@@ -32,7 +33,7 @@ class rsync::server(
     include xinetd
     xinetd::service { 'rsync':
       bind        => $address,
-      port        => '873',
+      port        => $port,
       server      => '/usr/bin/rsync',
       server_args => "--daemon --config ${conf_file}",
       require     => Package['rsync'],

@@ -48,18 +48,27 @@ define rsync::put (
   if $user {
     $myUserOpt = "-e 'ssh -i ${myKeyfile} -l ${user}'"
     $myUser = "${user}@"
+  } else {
+    $myUserOpt = undef
+    $myUser = undef
   }
 
   if $purge {
     $myPurge = '--delete'
+  } else {
+    $myPurge = undef
   }
 
   if $exclude {
     $myExclude = join(prefix(flatten([$exclude]), '--exclude='), ' ')
+  } else {
+    $myExclude = undef
   }
 
   if $include {
     $myInclude = join(prefix(flatten([$include]), '--include='), ' ')
+  } else {
+    $myInclude = undef
   }
 
   if $include or $exclude {

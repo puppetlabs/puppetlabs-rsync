@@ -3,7 +3,8 @@ require 'spec_helper'
 describe 'rsync::server::module', :type => :define do
   let :facts do
     {
-      :concat_basedir => '/dne'
+      :concat_basedir => '/dne',
+      :osfamily       => 'Debian',
     }
   end
 
@@ -99,4 +100,3 @@ describe 'rsync::server::module', :type => :define do
   end
 
 end
-

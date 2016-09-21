@@ -2,7 +2,8 @@ require 'spec_helper'
 describe 'rsync::server', :type => :class do
   let(:facts) do
     {
-      :concat_basedir => '/dne'
+      :concat_basedir => '/dne',
+      :osfamily       => 'Debian',
     }
   end
 

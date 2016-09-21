@@ -79,14 +79,6 @@ define rsync::put (
     }
   }
 
-  if $include or $exclude {
-    if $exclude_first {
-      $excludeAndInclude = join(delete_undef_values([$myExclude, $myInclude]), ' ')
-    } else {
-      $excludeAndInclude = join(delete_undef_values([$myInclude, $myExclude]), ' ')
-    }
-  }
-
   if $path {
     $myPath = $path
   } else {

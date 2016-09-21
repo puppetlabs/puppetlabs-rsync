@@ -63,6 +63,16 @@ describe 'rsync::server', :type => :class do
     }
   end
 
+  describe 'when overriding port' do
+    let :params do
+      { :address => '2001' }
+    end
+
+    it {
+      is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^port\s*=\s*2001$/)
+    }
+  end
+
   describe 'when overriding uid' do
     let :params do
       { :uid => 'testuser' }

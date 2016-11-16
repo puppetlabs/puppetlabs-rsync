@@ -55,42 +55,62 @@ define rsync::get (
 
   if $user {
     $myUser = "-e 'ssh -i ${mykeyfile} -l ${user}' ${user}@"
+  } else {
+    $myUser = undef
   }
 
   if $purge {
     $myPurge = '--delete'
+  } else {
+    $myPurge = undef
   }
 
   if $exclude {
     $myExclude = join(prefix(flatten([$exclude]), '--exclude='), ' ')
+  } else {
+    $myExclude = undef
   }
 
   if $include {
     $myInclude = join(prefix(flatten([$include]), '--include='), ' ')
+  } else {
+    $myInclude = undef
   }
 
   if $recursive {
     $myRecursive = '-r'
+  } else {
+    $myRecursive = undef
   }
 
   if $links {
     $myLinks = '--links'
+  } else {
+    $myLinks = undef
   }
 
   if $hardlinks {
     $myHardLinks = '--hard-links'
+  } else {
+    $myHardLinks = undef
   }
 
   if $copylinks {
     $myCopyLinks = '--copy-links'
+  } else {
+    $myCopyLinks = undef
   }
 
   if $times {
     $myTimes = '--times'
+  } else {
+    $myTimes = undef
   }
 
   if $chown {
     $myChown = "--chown=${chown}"
+  } else {
+    $myChown = undef
   }
 
   $rsync_options = join(

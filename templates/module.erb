@@ -2,46 +2,49 @@
 # DO NOT EDIT
 
 [ <%= @name %> ]
-path             = <%= @path %>
-read only        = <%= @read_only %>
-write only       = <%= @write_only %>
-list             = <%= @list %>
-uid              = <%= @uid %>
-gid              = <%= @gid %>
+path               = <%= @path %>
+read only          = <%= @read_only %>
+write only         = <%= @write_only %>
+list               = <%= @list %>
+uid                = <%= @uid %>
+gid                = <%= @gid %>
 <% if @incoming_chmod -%>
-incoming chmod   = <%= @incoming_chmod %>
+incoming chmod     = <%= @incoming_chmod %>
 <% end -%>
 <% if @outgoing_chmod -%>
-outgoing chmod   = <%= @outgoing_chmod %>
+outgoing chmod     = <%= @outgoing_chmod %>
 <% end -%>
-max connections  = <%= @max_connections %>
+max connections    = <%= @max_connections %>
 <% if Integer(@max_connections) > 0 -%>
-lock file        = <%= @lock_file %>
+lock file          = <%= @lock_file %>
 <% end -%>
 <% if @comment -%>
-comment          = <%= @comment %>
+comment            = <%= @comment %>
 <% end -%>
 <% if @secrets_file -%>
-secrets file     = <%= @secrets_file %>
+secrets file       = <%= @secrets_file %>
 <% end -%>
 <% if @auth_users -%>
-auth users       = <%= Array(@auth_users).join(', ')%>
+auth users         = <%= Array(@auth_users).join(', ')%>
 <% end -%>
 <% if @hosts_allow -%>
-hosts allow      = <%= Array(@hosts_allow).join(' ')%>
+hosts allow        = <%= Array(@hosts_allow).join(' ')%>
 <% end -%>
 <% if @hosts_deny -%>
-hosts deny       = <%= Array(@hosts_deny).join(' ')%>
+hosts deny         = <%= Array(@hosts_deny).join(' ')%>
 <% end -%>
 <% if @exclude -%>
-exclude          = <%= Array(@exclude).join(' ')%>
+exclude            = <%= Array(@exclude).join(' ')%>
 <% end -%>
 <% if @transfer_logging -%>
-transfer logging = <%= @transfer_logging %>
+transfer logging   = <%= @transfer_logging %>
 <% end -%>
 <% if @log_format -%>
-log format       = <%= @log_format %>
+log format         = <%= @log_format %>
 <% end -%>
 <% if @refuse_options -%>
-refuse options   = <%= Array(@refuse_options).join(' ')%>
+refuse options     = <%= Array(@refuse_options).join(' ')%>
+<% end -%>
+<% if @ignore_nonreadable -%>
+ignore nonreadable = <%= @ignore_nonreadable %>
 <% end -%>

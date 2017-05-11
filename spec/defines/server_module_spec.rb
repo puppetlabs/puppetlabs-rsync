@@ -68,20 +68,21 @@ describe 'rsync::server::module', :type => :define do
   end
 
   {
-    :comment          => 'super module !',
-    :read_only        => 'no',
-    :write_only       => 'yes',
-    :list             => 'no',
-    :uid              => '4682',
-    :gid              => '4682',
-    :incoming_chmod   => '0777',
-    :outgoing_chmod   => '0777',
-    :secrets_file     => '/path/to/secrets',
-    :hosts_allow      => ['localhost', '169.254.42.51'],
-    :hosts_deny       => ['some-host.example.com', '10.0.0.128'],
-    :transfer_logging => 'true',
-    :log_format       => '%t %a %m %f %b',
-    :refuse_options   => ['c', 'delete']
+    :comment            => 'super module !',
+    :read_only          => 'no',
+    :write_only         => 'yes',
+    :list               => 'no',
+    :uid                => '4682',
+    :gid                => '4682',
+    :incoming_chmod     => '0777',
+    :outgoing_chmod     => '0777',
+    :secrets_file       => '/path/to/secrets',
+    :hosts_allow        => ['localhost', '169.254.42.51'],
+    :hosts_deny         => ['some-host.example.com', '10.0.0.128'],
+    :transfer_logging   => 'true',
+    :log_format         => '%t %a %m %f %b',
+    :refuse_options     => ['c', 'delete'],
+    :ignore_nonreadable => 'yes'
   }.each do |k,v|
     describe "when overriding #{k}" do
       let :params do

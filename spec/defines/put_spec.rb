@@ -128,6 +128,32 @@ describe 'rsync::put', :type => :define do
     }
   end
 
+  describe "when leaving default exclude and include order (exclude first)" do
+    let :params do
+      common_params.merge({ :include => 'cache/' , :exclude => 'something' })
+    end
+
+    it {
+      is_expected.to contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --exclude=something --include=cache/ example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --exclude=something --include=cache/ example.com foobar | wc -l` -gt 0",
+      })
+    }
+  end
+
+  describe "when changing the exclude and include order to include first" do
+    let :params do
+      common_params.merge({ :include => 'cache/' , :exclude => 'something', :exclude_first => false })
+    end
+
+    it {
+      is_expected.to contain_exec("rsync foobar").with({
+        'command' => 'rsync -q -a --include=cache/ --exclude=something example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --include=cache/ --exclude=something example.com foobar | wc -l` -gt 0",
+      })
+    }
+  end
+
   describe "when enabling purge" do
     let :params do
       common_params.merge({ :purge => true })

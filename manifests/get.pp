@@ -56,7 +56,7 @@ define rsync::get (
   }
 
   if $user {
-    $myUser = "-e 'ssh -i ${mykeyfile} -l ${user}' ${user}@"
+    $myUser = "-e 'ssh -i ${mykeyfile} -l ${user}'${user}@"
   } else {
     $myUser = undef
   }

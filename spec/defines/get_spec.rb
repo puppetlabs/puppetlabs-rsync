@@ -287,8 +287,8 @@ describe 'rsync::get', :type => :define do
 
     it {
       is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a --chown=user:group foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --chown=user:group foobar | wc -l` -gt 0"
+        'command' => 'rsync -q -a --chown=user:group example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --chown=user:group example.com foobar | wc -l` -gt 0"
        })
     }
   end
@@ -300,8 +300,8 @@ describe 'rsync::get', :type => :define do
 
     it {
       is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a --chmod=Dg-s,u+w,go-w,+X,+x foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --chmod=Dg-s,u+w,go-w,+X,+x foobar | wc -l` -gt 0"
+        'command' => 'rsync -q -a --chmod=Dg-s,u+w,go-w,+X,+x example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --chmod=Dg-s,u+w,go-w,+X,+x example.com foobar | wc -l` -gt 0"
        })
     }
   end
@@ -313,8 +313,8 @@ describe 'rsync::get', :type => :define do
 
     it {
       is_expected.to contain_exec("rsync foobar").with({
-        'command' => 'rsync -q -a --log-file=/tmp/logfile.out foobar',
-        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --log-file=/tmp/logfile.out foobar | wc -l` -gt 0"
+        'command' => 'rsync -q -a --log-file=/tmp/logfile.out example.com foobar',
+        'onlyif'  => "test `rsync --dry-run --itemize-changes -a --log-file=/tmp/logfile.out example.com foobar | wc -l` -gt 0"
        })
     }
   end

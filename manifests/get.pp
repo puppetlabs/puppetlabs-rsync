@@ -3,17 +3,20 @@
 # get files via rsync
 #
 # Parameters:
-#   $source        - source to copy from
-#   $path          - path to copy to, defaults to $name
-#   $user          - username on remote system
-#   $purge         - if set, rsync will use '--delete'
-#   $exlude        - string (or array) to be excluded
-#   $include       - string (or array) to be included
+#   $source  - source to copy from
+#   $path    - path to copy to, defaults to $name
+#   $user    - username on remote system
+#   $purge   - if set, rsync will use '--delete'
+#   $exlude  - string (or array) to be excluded
+#   $include - string (or array) to be included
 #   $exclude_first - if 'true' (default) then first exclude and then include; the other way around if 'false'
-#   $keyfile       - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
-#   $timeout       - timeout in seconds, defaults to 900
-#   $options       - default options to pass to rsync (-a)
-#   $onlyif        - Condition to run the rsync command
+#   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+#   $timeout - timeout in seconds, defaults to 900
+#   $options - default options to pass to rsync (-a)
+#   $chown   - ownership to pass to rsync (optional; requires rsync 3.1.0+)
+#   $chmod   - permissions to pass to rsync (optional)
+#   $logfile - logname to pass to rsync (optional)
+#   $onlyif  - Condition to run the rsync command
 #
 # Actions:
 #   get files via rsync
@@ -38,14 +41,16 @@ define rsync::get (
   $hardlinks     = undef,
   $copylinks     = undef,
   $times         = undef,
-  $exclude       = undef,
   $include       = undef,
+  $exclude       = undef,
   $exclude_first = true,
   $keyfile       = undef,
   $timeout       = '900',
   $execuser      = 'root',
   $options       = '-a',
   $chown         = undef,
+  $chmod         = undef,
+  $logfile       = undef,
   $onlyif        = undef,
 ) {
 
@@ -115,6 +120,18 @@ define rsync::get (
     $mychown = undef
   }
 
+  if $chmod {
+    $mychmod = "--chmod=${chmod}"
+  } else {
+    $mychmod = undef
+  }
+
+  if $logfile {
+    $mylogfile = "--log-file=${logfile}"
+  } else {
+    $mylogfile = undef
+  }
+
   if $include or $exclude {
     if $exclude_first {
       $excludeandinclude = join(delete_undef_values([$myexclude, $myinclude]), ' ')
@@ -127,7 +144,7 @@ define rsync::get (
 
   $rsync_options = join(
     delete_undef_values([$options, $mypurge, $excludeandinclude, $mylinks, $myhardlinks, $mycopylinks, $mytimes,
-      $myrecursive, $mychown, "${myuser}${source}", $path]), ' ')
+      $myrecursive, $mychown, $mychmod, $mylogfile, "${myuser}${source}", $path]), ' ')
 
   if !$onlyif {
     $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"

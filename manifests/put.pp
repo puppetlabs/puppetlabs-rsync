@@ -40,53 +40,55 @@ define rsync::put (
 ) {
 
   if $keyfile {
-    $myKeyfile = $keyfile
+    $mykeyfile = $keyfile
   } else {
-    $myKeyfile = "/home/${user}/.ssh/id_rsa"
+    $mykeyfile = "/home/${user}/.ssh/id_rsa"
   }
 
   if $user {
-    $myUserOpt = "-e 'ssh -i ${myKeyfile} -l ${user}'"
-    $myUser = "${user}@"
+    $myuseropt = "-e 'ssh -i ${mykeyfile} -l ${user}'"
+    $myuser = "${user}@"
   } else {
-    $myUserOpt = undef
-    $myUser = undef
+    $myuseropt = undef
+    $myuser = undef
   }
 
   if $purge {
-    $myPurge = '--delete'
+    $mypurge = '--delete'
   } else {
-    $myPurge = undef
+    $mypurge = undef
   }
 
   if $exclude {
-    $myExclude = join(prefix(flatten([$exclude]), '--exclude='), ' ')
+    $myexclude = join(prefix(flatten([$exclude]), '--exclude='), ' ')
   } else {
-    $myExclude = undef
+    $myexclude = undef
   }
 
   if $include {
-    $myInclude = join(prefix(flatten([$include]), '--include='), ' ')
+    $myinclude = join(prefix(flatten([$include]), '--include='), ' ')
   } else {
-    $myInclude = undef
+    $myinclude = undef
   }
 
   if $include or $exclude {
     if $exclude_first {
-      $excludeAndInclude = join(delete_undef_values([$myExclude, $myInclude]), ' ')
+      $excludeandinclude = join(delete_undef_values([$myexclude, $myinclude]), ' ')
     } else {
-      $excludeAndInclude = join(delete_undef_values([$myInclude, $myExclude]), ' ')
+      $excludeandinclude = join(delete_undef_values([$myinclude, $myexclude]), ' ')
     }
+  } else {
+    $excludeandinclude = undef
   }
 
   if $path {
-    $myPath = $path
+    $mypath = $path
   } else {
-    $myPath = $name
+    $mypath = $name
   }
 
   $rsync_options = join(
-    delete_undef_values([$options, $myPurge, $excludeAndInclude, $myUserOpt, $source, "${myUser}${myPath}"]), ' ')
+    delete_undef_values([$options, $mypurge, $excludeandinclude, $myuseropt, $source, "${myuser}${mypath}"]), ' ')
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",

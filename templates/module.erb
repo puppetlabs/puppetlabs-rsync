@@ -36,6 +36,9 @@ hosts deny         = <%= Array(@hosts_deny).join(' ')%>
 <% if @exclude -%>
 exclude            = <%= Array(@exclude).join(' ')%>
 <% end -%>
+<% if @dont_compress -%>
+dont compress      = <%= Array(@dont_compress).join(' ')%>
+<% end -%>
 <% if @transfer_logging -%>
 transfer logging   = <%= @transfer_logging %>
 <% end -%>

@@ -8,11 +8,13 @@
 #
 class rsync::server(
   $use_xinetd = true,
-  $address    = '0.0.0.0',
-  $motd_file  = 'UNSET',
+  $address    = undef,
+  $motd_file  = undef,
   $use_chroot = 'yes',
   $uid        = 'nobody',
   $gid        = 'nobody',
+  $nice       = '0',
+  $ionice     = '-c2',
   $modules    = {},
 ) inherits rsync {
 
@@ -35,8 +37,9 @@ class rsync::server(
     xinetd::service { 'rsync':
       bind        => $address,
       port        => '873',
-      server      => '/usr/bin/rsync',
-      server_args => "--daemon --config ${conf_file}",
+      nice        => $nice,
+      server      => '/usr/bin/ionice',
+      server_args => "${ionice} /usr/bin/rsync --daemon --config ${conf_file}",
       require     => Package['rsync'],
     }
   } else {
@@ -50,7 +53,7 @@ class rsync::server(
 
     if ( $::osfamily == 'Debian' ) {
       file { '/etc/default/rsync':
-        source => 'puppet:///modules/rsync/defaults',
+        content => template('rsync/defaults.erb'),
         notify => Service['rsync'],
       }
     }

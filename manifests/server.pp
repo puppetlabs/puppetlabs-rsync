@@ -14,7 +14,7 @@ class rsync::server(
   $uid        = 'nobody',
   $gid        = 'nobody',
   $nice       = '0',
-  $ionice     = '-c2',
+  $ionice     = '2',
   $modules    = {},
 ) inherits rsync {
 
@@ -39,7 +39,7 @@ class rsync::server(
       port        => '873',
       nice        => $nice,
       server      => '/usr/bin/ionice',
-      server_args => "${ionice} /usr/bin/rsync --daemon --config ${conf_file}",
+      server_args => "-c${ionice} /usr/bin/rsync --daemon --config ${conf_file}",
       require     => Package['rsync'],
     }
   } else {
@@ -51,6 +51,32 @@ class rsync::server(
       subscribe  => Concat[$conf_file],
     }
 
+    exec { 'check_etc_systemd_system_exists':
+      command => 'true',
+      path    =>  ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
+      onlyif  => 'test -d /etc/systemd/system',
+    }
+
+    file { 'systemd_rsync_service_d':
+      ensure  => directory,
+      path    => "/etc/systemd/system/${servicename}.service.d",
+      require => Exec['check_etc_systemd_system_exists'],
+    }
+
+    file { 'systemd_nice':
+      path    => "/etc/systemd/system/${servicename}.service.d/nice.conf",
+      content => "[Service]\nNice=${nice}",
+      require => File['systemd_rsync_service_d'],
+      notify  => Service[$servicename],
+    }
+
+    file { 'systemd_ionice':
+      path    => "/etc/systemd/system/${servicename}.service.d/ionice.conf",
+      content => "[Service]\nIOSchedulingClass=${ionice}",
+      require => File['systemd_rsync_service_d'],
+      notify  => Service[$servicename],
+    }
+
     if ( $::osfamily == 'Debian' ) {
       file { '/etc/default/rsync':
         content => template('rsync/defaults.erb'),
@@ -58,6 +84,7 @@ class rsync::server(
       }
     }
   }
+
 
   if $motd_file != 'UNSET' {
     file { '/etc/rsync-motd':

@@ -37,7 +37,7 @@ RSYNC_NICE='<%= @nice %>'
 #  See the manpage for ionice for allowed options.
 #  -c3 is recommended, this will run rsync IO at "idle" priority. Uncomment
 #  the next line to activate this.
-RSYNC_IONICE='<%= @ionice %>'
+RSYNC_IONICE='-c<%= @ionice %>'
 
 # Don't forget to create an appropriate config file,
 # else the daemon will not start.

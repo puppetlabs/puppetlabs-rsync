@@ -13,6 +13,8 @@ class rsync::server(
   $use_chroot = 'yes',
   $uid        = 'nobody',
   $gid        = 'nobody',
+  $nice       = '0',
+  $ionice     = '-c2',
   $modules    = {},
 ) inherits rsync {
 
@@ -50,7 +52,7 @@ class rsync::server(
 
     if ( $::osfamily == 'Debian' ) {
       file { '/etc/default/rsync':
-        source => 'puppet:///modules/rsync/defaults',
+        content => template('rsync/defaults.erb'),
         notify => Service['rsync'],
       }
     }

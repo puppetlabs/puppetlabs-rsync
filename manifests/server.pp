@@ -18,18 +18,63 @@ class rsync::server(
   $modules    = {},
 ) inherits rsync {
 
-  $conf_file = $::osfamily ? {
-    'Debian'  => '/etc/rsyncd.conf',
-    'suse'    => '/etc/rsyncd.conf',
-    'RedHat'  => '/etc/rsyncd.conf',
-    'FreeBSD' => '/usr/local/etc/rsync/rsyncd.conf',
-    default   => '/etc/rsync.conf',
-  }
-  $servicename = $::osfamily ? {
-    'suse'    => 'rsyncd',
-    'RedHat'  => 'rsyncd',
-    'FreeBSD' => 'rsyncd',
-    default   => 'rsync',
+  case $::osfamily {
+    'Debian': {
+      $conf_file = '/etc/rsyncd.conf'
+      $servicename = 'rsync'
+
+      case $::operatingsystem {
+        'Debian': {
+          if $::operatingsystemmajrelease <= 7 {
+            $initstyle = 'init'
+          } else {
+            $initstyle = 'systemd'
+          }
+        }
+        'Ubuntu': {
+          if $::lsbmajdistrelease <= 14 {
+            $initstyle = 'upstart'
+          } else {
+            $initstyle = 'systemd'
+          }
+        }
+        default: {
+          $conf_file = '/etc/rsync.conf'
+          $servicename = 'rsync'
+          $initstyle = 'init'
+        }
+      }
+    }
+    'RedHat': {
+      $conf_file = '/etc/rsyncd.conf'
+      $servicename = 'rsyncd'
+
+      if $::operatingsystemmajrelease <= 6 {
+        $initstyle = 'init'
+      } else {
+        $initstyle = 'systemd'
+      }
+    }
+    'suse': {
+      $conf_file = '/etc/rsyncd.conf'
+      $servicename = 'rsyncd'
+
+      if $::lsbdistrelease <= 11 {
+        $initstyle = 'init'
+      } else {
+        $initstyle = 'systemd'
+      }
+    }
+    'FreeBSD': {
+      $conf_file = '/usr/local/etc/rsync/rsyncd.conf'
+      $servicename = 'rsyncd'
+      $initstyle = 'bsd'
+    }
+    default: {
+      $conf_file = '/etc/rsync.conf'
+      $servicename = 'rsync'
+      $initstyle = 'init'
+    }
   }
 
   if $use_xinetd {
@@ -51,30 +96,25 @@ class rsync::server(
       subscribe  => Concat[$conf_file],
     }
 
-    exec { 'check_etc_systemd_system_exists':
-      command => 'true',
-      path    =>  ['/usr/bin', '/usr/sbin', '/bin', '/sbin'],
-      onlyif  => 'test -d /etc/systemd/system',
-    }
+    if $initstyle == 'systemd' {
+      file { 'systemd_rsync_service_d':
+        ensure => directory,
+        path   => "/etc/systemd/system/${servicename}.service.d",
+      }
 
-    file { 'systemd_rsync_service_d':
-      ensure  => directory,
-      path    => "/etc/systemd/system/${servicename}.service.d",
-      require => Exec['check_etc_systemd_system_exists'],
-    }
+      file { 'systemd_nice':
+        path    => "/etc/systemd/system/${servicename}.service.d/nice.conf",
+        content => "[Service]\nNice=${nice}",
+        require => File['systemd_rsync_service_d'],
+        notify  => Service[$servicename],
+      }
 
-    file { 'systemd_nice':
-      path    => "/etc/systemd/system/${servicename}.service.d/nice.conf",
-      content => "[Service]\nNice=${nice}",
-      require => File['systemd_rsync_service_d'],
-      notify  => Service[$servicename],
-    }
-
-    file { 'systemd_ionice':
-      path    => "/etc/systemd/system/${servicename}.service.d/ionice.conf",
-      content => "[Service]\nIOSchedulingClass=${ionice}",
-      require => File['systemd_rsync_service_d'],
-      notify  => Service[$servicename],
+      file { 'systemd_ionice':
+        path    => "/etc/systemd/system/${servicename}.service.d/ionice.conf",
+        content => "[Service]\nIOSchedulingClass=${ionice}",
+        require => File['systemd_rsync_service_d'],
+        notify  => Service[$servicename],
+      }
     }
 
     if ( $::osfamily == 'Debian' ) {

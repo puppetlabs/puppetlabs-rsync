@@ -40,6 +40,7 @@ describe 'rsync::server::module', :type => :define do
     it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^outgoing chmod\s*=\s*0644$/) }
     it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^max connections\s*=\s*0$/) }
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^lock file\s*=.*$/) }
+    it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^dont compress\s*=.*$/) }
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^secrets file\s*=.*$/) }
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^auth users\s*=.*$/) }
     it { is_expected.not_to contain_concat__fragment(fragment_name).with_content(/^hosts allow\s*=.*$/) }
@@ -97,6 +98,13 @@ describe 'rsync::server::module', :type => :define do
       mandatory_params.merge({ :auth_users     => ['me', 'you', 'them'] })
     end
     it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^auth users\s*=\s*me, you, them$/)}
+  end
+
+  describe "when overriding dont_compress" do
+    let :params do
+      mandatory_params.merge({ :dont_compress     => ['*.gz', '*.xz', '*.zip'] })
+    end
+    it { is_expected.to contain_concat__fragment(fragment_name).with_content(/^dont compress\s*=\s*\*.gz\s*\*.xz\s*\*.zip$/)}
   end
 
 end

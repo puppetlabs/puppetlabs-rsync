@@ -17,7 +17,7 @@ describe 'rsync::server', :type => :class do
         :order => '00_header',
       })
       is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^use chroot\s*=\s*yes$/)
-      is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^address\s*=\s*0.0.0.0$/)
+      is_expected.not_to contain_concat__fragment('rsyncd_conf_header').with_content(/^address\s*=.*$/)
     }
   end
 

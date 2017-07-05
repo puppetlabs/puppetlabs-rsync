@@ -8,8 +8,8 @@
 #
 class rsync::server(
   $use_xinetd = true,
-  $address    = '0.0.0.0',
-  $motd_file  = 'UNSET',
+  $address    = undef,
+  $motd_file  = undef,
   $use_chroot = 'yes',
   $uid        = 'nobody',
   $gid        = 'nobody',

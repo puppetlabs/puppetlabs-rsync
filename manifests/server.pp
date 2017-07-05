@@ -85,7 +85,6 @@ class rsync::server(
     }
   }
 
-
   if $motd_file != 'UNSET' {
     file { '/etc/rsync-motd':
       source => 'puppet:///modules/rsync/motd',

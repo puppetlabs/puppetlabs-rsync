@@ -27,7 +27,6 @@
 #   $refuse_options   - list of rsync command line options that will be refused by your rsync daemon.
 #   $log_file         - file used for logging. If undefined then syslog is assumed
 #   $use_chroot       - Use chroot
-#   $transfer_logging - Log each file transfer
 #
 #   sets up an rsync server
 #

@@ -8,6 +8,9 @@ write only         = <%= @write_only %>
 list               = <%= @list %>
 uid                = <%= @uid %>
 gid                = <%= @gid %>
+<% if @use_chroot -%>
+use chroot         = <%= @use_chroot %>
+<% end -%>
 <% if @incoming_chmod -%>
 incoming chmod     = <%= @incoming_chmod %>
 <% end -%>

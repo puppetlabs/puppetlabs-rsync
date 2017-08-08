@@ -48,3 +48,9 @@ refuse options     = <%= Array(@refuse_options).join(' ')%>
 <% if @ignore_nonreadable -%>
 ignore nonreadable = <%= @ignore_nonreadable %>
 <% end -%>
+<% if @log_file -%>
+log_file = <%= @log_file %>
+<% end -%>
+<% if @reverse_lookup -%>
+reverse lookup = <%= @reverse_lookup %>
+<% end -%>

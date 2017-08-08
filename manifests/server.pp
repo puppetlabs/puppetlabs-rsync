@@ -7,12 +7,14 @@
 #   class rsync
 #
 class rsync::server(
-  $use_xinetd = true,
-  $address    = '0.0.0.0',
-  $motd_file  = 'UNSET',
-  $use_chroot = 'yes',
-  $uid        = 'nobody',
-  $gid        = 'nobody',
+  $use_xinetd     = true,
+  $address        = '0.0.0.0',
+  $motd_file      = 'UNSET',
+  $use_chroot     = 'yes',
+  $uid            = 'nobody',
+  $gid            = 'nobody',
+  $log_file       = undef,
+  $reverse_lookup = undef,
   $modules    = {},
 ) inherits rsync {
 

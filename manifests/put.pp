@@ -40,13 +40,13 @@ define rsync::put (
 ) {
 
   if $keyfile {
-    $mykeyfile = $keyfile
+    $mykeyfile = "-i $keyfile"
   } else {
-    $mykeyfile = "/home/${user}/.ssh/id_rsa"
+    $mykeyfile = ""
   }
 
   if $user {
-    $myuseropt = "-e 'ssh -i ${mykeyfile} -l ${user}'"
+    $myuseropt = "-e 'ssh ${mykeyfile} -l ${user}'"
     $myuser = "${user}@"
   } else {
     $myuseropt = undef

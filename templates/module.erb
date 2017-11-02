@@ -48,3 +48,6 @@ refuse options     = <%= Array(@refuse_options).join(' ')%>
 <% if @ignore_nonreadable -%>
 ignore nonreadable = <%= @ignore_nonreadable %>
 <% end -%>
+<% if @log_file -%>
+log file = <%= @log_file %>
+<% end -%>

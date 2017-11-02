@@ -16,18 +16,27 @@ class rsync::server(
   $modules    = {},
 ) inherits rsync {
 
-  $conf_file = $::osfamily ? {
-    'Debian'  => '/etc/rsyncd.conf',
-    'suse'    => '/etc/rsyncd.conf',
-    'RedHat'  => '/etc/rsyncd.conf',
-    'FreeBSD' => '/usr/local/etc/rsync/rsyncd.conf',
-    default   => '/etc/rsync.conf',
-  }
-  $servicename = $::osfamily ? {
-    'suse'    => 'rsyncd',
-    'RedHat'  => 'rsyncd',
-    'FreeBSD' => 'rsyncd',
-    default   => 'rsync',
+  case $facts['os']['family'] {
+    'Debian': {
+      $conf_file = '/etc/rsyncd.conf'
+      $servicename = 'rsync'
+    }
+    'Suse': {
+      $conf_file = '/etc/rsyncd.conf'
+      $servicename = 'rsyncd'
+    }
+    'RedHat': {
+      $conf_file = '/etc/rsyncd.conf'
+      $servicename = 'rsyncd'
+    }
+    'FreeBSD': {
+      $conf_file = '/usr/local/etc/rsync/rsyncd.conf'
+      $servicename = 'rsyncd'
+    }
+    default: {
+      $conf_file = '/etc/rsync.conf'
+      $servicename = 'rsync'
+    }
   }
 
   if $use_xinetd {
@@ -48,7 +57,7 @@ class rsync::server(
       subscribe  => Concat[$conf_file],
     }
 
-    if ( $::osfamily == 'Debian' ) {
+    if ( $facts['os']['family'] == 'Debian' ) {
       file { '/etc/default/rsync':
         source => 'puppet:///modules/rsync/defaults',
         notify => Service['rsync'],

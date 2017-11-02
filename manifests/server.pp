@@ -7,6 +7,7 @@
 #   class rsync
 #
 class rsync::server(
+  $enable     = true,
   $use_xinetd = true,
   $address    = '0.0.0.0',
   $motd_file  = 'UNSET',
@@ -41,7 +42,12 @@ class rsync::server(
 
   if $use_xinetd {
     include xinetd
+    $ensure = $enable ? {
+      true  => 'present',
+      false => 'absent'
+    }
     xinetd::service { 'rsync':
+      ensure      => $ensure,
       bind        => $address,
       port        => '873',
       server      => '/usr/bin/rsync',
@@ -49,8 +55,12 @@ class rsync::server(
       require     => Package['rsync'],
     }
   } else {
+    $ensure = $enable ? {
+      true  => 'running',
+      false => 'stopped'
+    }
     service { $servicename:
-      ensure     => running,
+      ensure     => $ensure,
       enable     => true,
       hasstatus  => true,
       hasrestart => true,

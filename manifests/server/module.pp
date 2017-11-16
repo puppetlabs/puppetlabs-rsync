@@ -65,7 +65,6 @@ define rsync::server::module (
   $timeout            = '0',
   $lock_file          = '/var/run/rsyncd.lock',
   $secrets_file       = undef,
-  $exclude            = undef,
   $auth_users         = undef,
   $hosts_allow        = undef,
   $hosts_deny         = undef,

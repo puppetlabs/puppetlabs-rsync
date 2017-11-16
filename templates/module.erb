@@ -61,6 +61,7 @@ ignore nonreadable = <%= @ignore_nonreadable %>
 <% end -%>
 <% if @log_file -%>
 log file = <%= @log_file %>
+<% end -%>
 <% if @include -%>
 include            = <%= Array(@include).join(' ')%>
 <% end -%>

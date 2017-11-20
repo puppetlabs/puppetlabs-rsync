@@ -94,8 +94,8 @@ sets up a rsync server
     $list            - yes||no, defaults to no
     $uid             - uid of rsync server, defaults to 0
     $gid             - gid of rsync server, defaults to 0
-    $incoming_chmod  - incoming file mode, defaults to 644
-    $outgoing_chmod  - outgoing file mode, defaults to 644
+    $incoming_chmod  - incoming file mode, defaults to no chmod
+    $outgoing_chmod  - outgoing file mode, defaults to no chmod
     $max_connections - maximum number of simultaneous connections allowed, defaults to 0
     $lock_file       - file used to support the max connections parameter, defaults to /var/run/rsyncd.lock only needed if max_connections > 0
     $secrets_file    - path to the file that contains the username:password pairs used for authenticating this module
@@ -121,15 +121,6 @@ sets up a rsync server
       require => File[$base],
     }
 
-To disable default values for ``incoming_chmod`` and ``outgoing_chmod``, and
-do not add empty values to the resulting config, set both values to ``false``
-
-    rsync::server::module { 'repo':
-      path           => $base,
-      incoming_chmod => false,
-      outgoing_chmod => false,
-      require        => File[$base],
-    }
 
 # Configuring via Hiera #
 ``rsync::put``, ``rsync::get``, and ``rsync::server::module`` resources can be
@@ -138,8 +129,8 @@ configured using Hiera hashes. For example:
     rsync::server::modules:
       myrepo:
         path: /mypath
-        incoming_chmod: false
-        outgoing_chmod: false
+        incoming_chmod: 755
+        outgoing_chmod: 755
       myotherrepo:
         path: /otherpath
         read_only: false

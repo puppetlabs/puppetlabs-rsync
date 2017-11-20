@@ -19,23 +19,26 @@ Manage rsync package
 get files via rsync
 
 ## Parameters: ##
-    $source     - source to copy from
-    $path       - path to copy to, defaults to $name
-    $user       - username on remote system
-    $purge      - if set, rsync will use '--delete'
-    $recursive  - if set, rsync will use '-r'
-    $links      - if set, rsync will use '--links'
-    $hardlinks  - if set, rsync will use '--hard-links'
-    $copylinks  - if set, rsync will use '--copy-links'
-    $times      - if set, rsync will use '--times'
-    $include    - string (or array) to be included
-    $exclude    - string (or array) to be excluded
-    $keyfile    - ssh key used to connect to remote host
-    $timeout    - timeout in seconds, defaults to 900
-    $execuser   - user to run the command (passed to exec)
-    $options    - default options to pass to rsync (-a)
-    $chown      - USER:GROUP simple username/groupname mapping
-    $onlyif     - condition to run the rsync command
+    $source        - source to copy from
+    $path          - path to copy to, defaults to $name
+    $user          - username on remote system
+    $purge         - if set, rsync will use '--delete'
+    $recursive     - if set, rsync will use '-r'
+    $links         - if set, rsync will use '--links'
+    $hardlinks     - if set, rsync will use '--hard-links'
+    $copylinks     - if set, rsync will use '--copy-links'
+    $times         - if set, rsync will use '--times'
+    $exclude       - string (or array) to be excluded
+    $include       - string (or array) to be included
+    $exclude_first - if 'true' (default) then first exclude and then include; the other way around if 'false'
+    $keyfile       - ssh key used to connect to remote host
+    $timeout       - timeout in seconds, defaults to 900
+    $execuser      - user to run the command (passed to exec)
+    $options       - default options to pass to rsync (-a)
+    $chown         - USER:GROUP simple username/groupname mapping
+    $chmod         - file and/or directory permissions
+    $logfile       - log file name
+    $onlyif        - condition to run the rsync command
 
 ## Actions: ##
   get files via rsync
@@ -55,15 +58,16 @@ get files via rsync
 put files via rsync
 
 ## Parameters: ##
-    $source  - source to copy from
-    $path    - path to copy to, defaults to $name
-    $user    - username on remote system
-    $purge   - if set, rsync will use '--delete'
-    $include - string (or array) to be included
-    $exclude - string (or array) to be excluded
-    $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
-    $timeout - timeout in seconds, defaults to 900
-    $options - default options to pass to rsync (-a)
+    $source        - source to copy from
+    $path          - path to copy to, defaults to $name
+    $user          - username on remote system
+    $purge         - if set, rsync will use '--delete'
+    $exclude       - string (or array) to be excluded
+    $include       - string (or array) to be included
+    $exclude_first - if 'true' (default) then first exclude and then include; the other way around if 'false'
+    $keyfile       - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+    $timeout       - timeout in seconds, defaults to 900
+    $options       - default options to pass to rsync (-a)
 
 ## Actions: ##
   put files via rsync
@@ -99,8 +103,10 @@ sets up a rsync server
     $hosts_allow     - list of patterns allowed to connect to this module (man 5 rsyncd.conf for details, must be undef or an array)
     $hosts_deny      - list of patterns allowed to connect to this module (man 5 rsyncd.conf for details, must be undef or an array)
     $transfer_logging - parameter enables per-file logging of downloads and uploads in a format somewhat similar to that used by ftp daemons.
+    $log_file         - log messages to the indicated file rather than using syslog
     $log_format       - This parameter allows you to specify the format used for logging file transfers when transfer logging is enabled. See the rsyncd.conf documentation for more details.
     $refuse_options  - list of rsync command line options that will be refused by your rsync daemon.
+    $ignore_nonreadable - This  tells  the  rsync daemon to completely ignore files that are not readable by the user.
 
 ## Actions: ##
   sets up an rsync server

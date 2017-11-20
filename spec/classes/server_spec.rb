@@ -88,5 +88,5 @@ describe 'rsync::server', :type => :class do
         }
       end
     end
-<  end
+  end
 end

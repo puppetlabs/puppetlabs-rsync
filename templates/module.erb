@@ -65,9 +65,6 @@ include            = <%= Array(@include).join(' ')%>
 <% if @include_from -%>
 include from       = <%= @include_from%>
 <% end -%>
-<% if @exclude -%>
-exclude            = <%= Array(@exclude).join(' ')%>
-<% end -%>
 <% if @exclude_from -%>
 exclude from       = <%= @exclude_from%>
 <% end -%>

@@ -1,13 +1,14 @@
-# This file is being maintained by Puppet.
-# DO NOT EDIT
-
 [ <%= @name %> ]
 path               = <%= @path %>
 read only          = <%= @read_only %>
 write only         = <%= @write_only %>
 list               = <%= @list %>
+<% if @uid -%>
 uid                = <%= @uid %>
+<% end -%>
+<% if @gid -%>
 gid                = <%= @gid %>
+<% end -%>
 <% if @numeric_ids -%>
 numeric ids        = <%= @numeric_ids %>
 <% end -%>

@@ -1,3 +1,18 @@
+## Unsupported Release 1.1.0
+### Summary
+
+This minor release is a roll up of bug fixes and features.
+
+#### Added
+- migrate to `rspec-puppet-facts`.
+- Add support for module `log file`.
+- Added module options that are currently missing.
+
+#### Fixed
+- Change redirects during fixtures download.
+- Add upper version boundary for `xinted` dependency.
+- Replace legacy facts with new $facts hash.
+
 ## Unsupported Release 1.0.0
 ### Summary
 This is a major release that drops Puppet 3 support.

@@ -64,7 +64,7 @@ parameters to rsync::get.
 ## 2013-01-31 - Release 0.2.0
 - Added use_chroot parameter.
 - Ensure rsync package is installed.
-- Compatability changes for Ruby 2.0.
+- Compatibility changes for Ruby 2.0.
 - Added execuser parameter to run command as specified user.
 - Various typo and bug fixes.
 

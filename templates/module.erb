@@ -1,20 +1,32 @@
-# This file is being maintained by Puppet.
-# DO NOT EDIT
-
 [ <%= @name %> ]
 path               = <%= @path %>
 read only          = <%= @read_only %>
 write only         = <%= @write_only %>
 list               = <%= @list %>
+<% if @uid -%>
 uid                = <%= @uid %>
+<% end -%>
+<% if @gid -%>
 gid                = <%= @gid %>
+<% end -%>
+<% if @numeric_ids -%>
+numeric ids        = <%= @numeric_ids %>
+<% end -%>
+<% if @use_chroot -%>
+use chroot         = <%= @use_chroot %>
+<% end -%>
 <% if @incoming_chmod -%>
 incoming chmod     = <%= @incoming_chmod %>
 <% end -%>
 <% if @outgoing_chmod -%>
 outgoing chmod     = <%= @outgoing_chmod %>
 <% end -%>
+<% if @max_connections -%>
 max connections    = <%= @max_connections %>
+<% end -%>
+<% if @timeout -%>
+timeout            = <%= @timeout %>
+<% end -%>
 <% if Integer(@max_connections) > 0 -%>
 lock file          = <%= @lock_file %>
 <% end -%>
@@ -47,4 +59,22 @@ refuse options     = <%= Array(@refuse_options).join(' ')%>
 <% end -%>
 <% if @ignore_nonreadable -%>
 ignore nonreadable = <%= @ignore_nonreadable %>
+<% end -%>
+<% if @log_file -%>
+log file = <%= @log_file %>
+<% end -%>
+<% if @include -%>
+include            = <%= Array(@include).join(' ')%>
+<% end -%>
+<% if @include_from -%>
+include from       = <%= @include_from%>
+<% end -%>
+<% if @exclude -%>
+exclude            = <%= Array(@exclude).join(' ')%>
+<% end -%>
+<% if @exclude_from -%>
+exclude from       = <%= @exclude_from%>
+<% end -%>
+<% if @dont_compress -%>
+dont compress      = <%= Array(@dont_compress).join(' ')%>
 <% end -%>

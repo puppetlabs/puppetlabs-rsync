@@ -9,12 +9,12 @@
 #   $read_only          - yes||no, defaults to yes
 #   $write_only         - yes||no, defaults to no
 #   $list               - yes||no, defaults to yes
-#   $uid                - uid of rsync server, defaults to 0
-#   $gid                - gid of rsync server, defaults to 0
+#   $uid                - uid of rsync server
+#   $gid                - gid of rsync server
 #   $numeric_ids        - yes||no, don't resolve uids to usernames, defaults to undef
 #   $ignore_nonreadable - do not display files the daemon cannot read, defaults to yes
-#   $incoming_chmod     - incoming file mode, defaults to 0644
-#   $outgoing_chmod     - outgoing file mode, defaults to 0644
+#   $incoming_chmod     - incoming file mode
+#   $outgoing_chmod     - outgoing file mode
 #   $max_connections    - maximum number of simultaneous connections allowed, defaults to 0
 #   $lock_file          - file used to support the max connections parameter, defaults to /var/run/rsyncd.lock
 #    only needed if max_connections > 0

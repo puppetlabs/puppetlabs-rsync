@@ -40,7 +40,7 @@ class rsync::server(
   }
 
   if $use_xinetd {
-    include xinetd
+    include ::xinetd
     xinetd::service { 'rsync':
       bind        => $address,
       port        => '873',

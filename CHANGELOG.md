@@ -1,3 +1,13 @@
+## Unsupported Release 1.1.1
+### Summary
+
+This minor release adds support for IPv6
+
+#### Added
+- additional tests for ipv6 and dual stack configuration
+
+#### Fixed
+
 ## Unsupported Release 1.1.0
 ### Summary
 

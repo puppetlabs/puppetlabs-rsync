@@ -22,23 +22,23 @@ class rsync::server(
 
   case $facts['os']['family'] {
     'Debian': {
-      $conf_file      = '/etc/rsyncd.conf'
-      $servicename    = 'rsync'
+      $conf_file   = '/etc/rsyncd.conf'
+      $servicename = 'rsync'
     }
     'Suse': {
-      $conf_file      = '/etc/rsyncd.conf'
-      $servicename    = 'rsyncd'
+      $conf_file   = '/etc/rsyncd.conf'
+      $servicename = 'rsyncd'
     }
     'RedHat': {
-      $conf_file      = '/etc/rsyncd.conf'
-      $servicename    = 'rsyncd'
+      $conf_file   = '/etc/rsyncd.conf'
+      $servicename = 'rsyncd'
     }
     'FreeBSD': {
-      $conf_file = '/usr/local/etc/rsync/rsyncd.conf'
+      $conf_file   = '/usr/local/etc/rsync/rsyncd.conf'
       $servicename = 'rsyncd'
     }
     default: {
-      $conf_file = '/etc/rsync.conf'
+      $conf_file   = '/etc/rsync.conf'
       $servicename = 'rsync'
     }
   }

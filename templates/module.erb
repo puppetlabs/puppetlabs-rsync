@@ -45,6 +45,9 @@ hosts allow        = <%= Array(@hosts_allow).join(' ')%>
 <% if @hosts_deny -%>
 hosts deny         = <%= Array(@hosts_deny).join(' ')%>
 <% end -%>
+<% if @exclude -%>
+exclude            = <%= Array(@exclude).join(' ')%>
+<% end -%>
 <% if @transfer_logging -%>
 transfer logging   = <%= @transfer_logging %>
 <% end -%>

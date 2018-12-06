@@ -87,6 +87,50 @@ describe 'rsync::server', :type => :class do
           is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^gid\s*=\s*testgroup$/)
         }
       end
+
+      describe 'when enabling ipv6 with default config' do
+        let :params do
+          { :enable_ipv6 => true }
+        end
+        it {
+          is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^address\s*=\s*0.0.0.0$/)
+          is_expected.to contain_concat__fragment('rsyncd_ipv6_conf_header').with_content(/^address\s*=\s*::$/)
+        }
+      end
+
+      describe 'when enabling only ipv6 with default config' do
+        let :params do
+          { :enable_ipv6 => true,
+            :enable_ipv4 => false }
+        end
+        it {
+          is_expected.not_to contain_concat__fragment('rsyncd_conf_header').with_content(/^address\s*=\s*0.0.0.0$/)
+          is_expected.to contain_concat__fragment('rsyncd_ipv6_conf_header').with_content(/^address\s*=\s*::$/)
+        }
+      end
+
+      describe 'when enabling dualstack without xinetd' do
+        let :params do
+          { :enable_ipv6 => true,
+            :enable_ipv4 => true,
+            :use_xinetd  => false }
+        end
+        it {
+          is_expected.to compile.and_raise_error(/Please use xinetd to configure dual stack for rsync/)
+        }
+      end
+
+      describe 'when enabling only ipv6 without xinetd' do
+        let :params do
+          { :enable_ipv6 => true,
+            :enable_ipv4 => false,
+            :use_xinetd  => false }
+        end
+        it {
+          is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^address\s*=\s*::$/)
+          is_expected.not_to contain_concat__fragment('rsyncd_ipv6_conf_header')
+        }
+      end
     end
   end
 end

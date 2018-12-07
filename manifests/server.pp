@@ -47,14 +47,14 @@ class rsync::server(
     include ::xinetd
     if $enable_ipv4 {
       concat { $conf_file: }
-      $bind_address = $address
+      $final_bind_address = $address
       concat::fragment { 'rsyncd_conf_header':
         target  => $conf_file,
         content => template('rsync/header.erb'),
         order   => '00_header',
       }
       xinetd::service { 'rsync':
-        bind         => $address,
+        bind         => $final_bind_address,
         port         => '873',
         flags        => 'IPv4',
         server       => '/usr/bin/rsync',
@@ -66,7 +66,7 @@ class rsync::server(
     }
     if $enable_ipv6 {
       $conf_file_ipv6 = "${conf_file}_ipv6"
-      $bind_address = $address_ipv6
+      $final_bind_address = $address_ipv6
       concat { $conf_file_ipv6: }
       concat::fragment { 'rsyncd_ipv6_conf_header':
         target  => $conf_file_ipv6,
@@ -74,7 +74,7 @@ class rsync::server(
         order   => '00_header',
       }
       xinetd::service { 'rsync-ipv6':
-        bind         => $address_ipv6,
+        bind         => $final_bind_address,
         port         => '873',
         flags        => 'IPv6',
         server       => '/usr/bin/rsync',
@@ -90,7 +90,7 @@ class rsync::server(
     }
     concat { $conf_file: }
     if $enable_ipv4 {
-      $bind_address = $address
+      $final_bind_address = $address
       concat::fragment { 'rsyncd_conf_header':
         target  => $conf_file,
         content => template('rsync/header.erb'),
@@ -106,7 +106,7 @@ class rsync::server(
     }
     if $enable_ipv6 {
       $conf_file_ipv6 = $conf_file
-      $bind_address = $address_ipv6
+      $final_bind_address = $address_ipv6
       concat::fragment { 'rsyncd_conf_header':
         target  => $conf_file_ipv6,
         content => template('rsync/header.erb'),

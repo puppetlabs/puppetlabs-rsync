@@ -8,7 +8,7 @@ use chroot = <%= @use_chroot %>
 log format = %t %a %m %f %b
 syslog facility = local3
 timeout = 300
-address = <%= @address %>
+address = <%= @bind_address %>
 <% if @motd_file != 'UNSET' -%>
 motd file = <%= @motd_file %>
 <% end -%>

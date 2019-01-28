@@ -14,6 +14,7 @@ class rsync::server(
   $uid        = 'nobody',
   $gid        = 'nobody',
   $modules    = {},
+  $xinetd_cps = undef,
 ) inherits rsync {
 
   case $facts['os']['family'] {
@@ -43,6 +44,7 @@ class rsync::server(
     include xinetd
     xinetd::service { 'rsync':
       bind        => $address,
+      cps         => $xinetd_cps,
       port        => '873',
       server      => '/usr/bin/rsync',
       server_args => "--daemon --config ${conf_file}",

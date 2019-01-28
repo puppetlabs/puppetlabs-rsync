@@ -48,6 +48,16 @@ describe 'rsync::server', :type => :class do
         }
       end
 
+      describe 'when setting xinetd cps' do
+        let :params do
+          { :xinetd_cps => '25 10' }
+        end
+
+        it {
+          is_expected.to contain_xinetd__service('rsync').with({ 'cps' => '25 10' })
+        }
+      end
+
       describe 'when overriding use_chroot' do
         let :params do
           { :use_chroot => 'no' }

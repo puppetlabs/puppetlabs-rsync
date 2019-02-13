@@ -1,3 +1,13 @@
+## Unsupported Release 1.1.1
+### Summary
+
+This minor release is to roll out a bug fix.
+
+#### Fixed
+
+- Duplicate line removed from template.
+- Small documentation fix.
+
 ## Unsupported Release 1.1.0
 ### Summary
 

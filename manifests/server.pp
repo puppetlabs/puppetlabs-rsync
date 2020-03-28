@@ -11,6 +11,7 @@ class rsync::server(
   $address    = '0.0.0.0',
   $motd_file  = 'UNSET',
   $use_chroot = 'yes',
+  $enable_pid = true,
   $uid        = 'nobody',
   $gid        = 'nobody',
   $modules    = {},

@@ -12,6 +12,7 @@ describe 'rsync::server', :type => :class do
           is_expected.to contain_xinetd__service('rsync').with({ 'bind' => '0.0.0.0' })
           is_expected.not_to contain_service('rsync')
           is_expected.not_to contain_file('/etc/rsync-motd')
+          is_expected.to contain_concat__fragment('rsyncd_conf_header').with_context(/^pid file\s*=\s*\/var\/run\/rsyncd\.pid$/)
           is_expected.to contain_concat__fragment('rsyncd_conf_header').with({
             :order => '00_header',
           })
@@ -65,6 +66,16 @@ describe 'rsync::server', :type => :class do
 
         it {
           is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^address\s*=\s*10.0.0.42$/)
+        }
+      end
+
+      describe 'when disabling pid file' do
+        let :params do
+          { :enable_pid => false }
+        end
+
+        it {
+          is_expected.to_not contain_concat__fragment('rsyncd_conf_header').with_context(/^pid file\s*=.*/)
         }
       end
 

@@ -1,7 +1,9 @@
 # This file is being maintained by Puppet.
 # DO NOT EDIT
 
+<% if $enable_pid -%>
 pid file = /var/run/rsyncd.pid
+<% end -%>
 uid = <%= @uid %>
 gid = <%= @gid %>
 use chroot = <%= @use_chroot %>

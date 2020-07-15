@@ -12,7 +12,7 @@ class rsync::server(
   $motd_file  = 'UNSET',
   $use_chroot = 'yes',
   $uid        = 'nobody',
-  $gid        = 'nobody',
+  $gid        = undef,
   $modules    = {},
 ) inherits rsync {
 
@@ -20,22 +20,38 @@ class rsync::server(
     'Debian': {
       $conf_file = '/etc/rsyncd.conf'
       $servicename = 'rsync'
+      if $gid {
+        $mygid = $gid
+      } else {
+        $mygid = 'nogroup'
+      }
     }
-    'Suse': {
+    'Suse', 'RedHat': {
       $conf_file = '/etc/rsyncd.conf'
       $servicename = 'rsyncd'
-    }
-    'RedHat': {
-      $conf_file = '/etc/rsyncd.conf'
-      $servicename = 'rsyncd'
+      if $gid {
+        $mygid = $gid
+      } else {
+        $mygid = 'nobody'
+      }
     }
     'FreeBSD': {
       $conf_file = '/usr/local/etc/rsync/rsyncd.conf'
       $servicename = 'rsyncd'
+      if $gid {
+        $mygid = $gid
+      } else {
+        $mygid = 'nobody'
+      }
     }
     default: {
       $conf_file = '/etc/rsync.conf'
       $servicename = 'rsync'
+      if $gid {
+        $mygid = $gid
+      } else {
+        $mygid = 'nobody'
+      }
     }
   }
 

@@ -3,7 +3,7 @@
 
 pid file = /var/run/rsyncd.pid
 uid = <%= @uid %>
-gid = <%= @gid %>
+gid = <%= @mygid %>
 use chroot = <%= @use_chroot %>
 log format = %t %a %m %f %b
 syslog facility = local3

@@ -65,7 +65,7 @@
       "version_requirement": ">= 4.7.0 < 7.0.0"
     }
   ],
-  "pdk-version": "1.19.0.pre (heads/master-0-g3d6a310)",
+  "pdk-version": "1.19.0.pre (heads/master-0-g226a101)",
   "template-url": "https://github.com/puppetlabs/pdk-templates#master",
-  "template-ref": "heads/master-0-g3d2e75c"
+  "template-ref": "remotes/origin/master-0-ga58fd92"
 }

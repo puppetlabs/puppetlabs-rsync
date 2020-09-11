@@ -266,6 +266,10 @@ Rsync comment.
 
 File containing motd info.
 
+##### `pid_file`
+
+PID file. Defaults to /var/run/rsyncd.pid. The pid file parameter won't be applied if set to "UNSET"; rsyncd will not use a PID file in this case.
+
 ##### `read_only`
 
 yes||no 

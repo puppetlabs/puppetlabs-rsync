@@ -10,6 +10,7 @@ class rsync::server(
   $use_xinetd = true,
   $address    = '0.0.0.0',
   $motd_file  = 'UNSET',
+  Variant[Enum['UNSET'], Stdlib::Absolutepath] $pid_file = '/var/run/rsyncd.pid',
   $use_chroot = 'yes',
   $uid        = 'nobody',
   $gid        = 'nobody',

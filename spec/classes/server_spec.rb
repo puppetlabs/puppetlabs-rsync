@@ -17,6 +17,7 @@ describe 'rsync::server', :type => :class do
           })
           is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^use chroot\s*=\s*yes$/)
           is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^address\s*=\s*0.0.0.0$/)
+          is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(/^pid file\s*=\s*\/var\/run\/rsyncd.pid$/)
         }
       end
 
@@ -45,6 +46,16 @@ describe 'rsync::server', :type => :class do
 
         it {
           is_expected.to contain_file('/etc/rsync-motd')
+        }
+      end
+
+      describe 'when unsetting pid file' do
+        let :params do
+          { :pid_file => 'UNSET' }
+        end
+
+        it {
+          is_expected.not_to contain_concat__fragment('rsyncd_conf_header').with_content(/^pid file\s*=/)
         }
       end
 

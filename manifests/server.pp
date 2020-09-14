@@ -6,7 +6,7 @@
 #   class xinetd if use_xinetd is set to true
 #   class rsync
 #
-class rsync::server(
+class rsync::server (
   $use_xinetd = true,
   $address    = '0.0.0.0',
   $motd_file  = 'UNSET',
@@ -16,7 +16,6 @@ class rsync::server(
   $gid        = 'nobody',
   $modules    = {},
 ) inherits rsync {
-
   case $facts['os']['family'] {
     'Debian': {
       $conf_file = '/etc/rsyncd.conf'
@@ -85,5 +84,4 @@ class rsync::server(
   }
 
   create_resources(rsync::server::module, $modules)
-
 }

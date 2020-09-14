@@ -38,7 +38,6 @@ define rsync::put (
   $timeout       = '900',
   $options       = '-a'
 ) {
-
   if $keyfile {
     $mykeyfile = $keyfile
   } else {
@@ -88,11 +87,11 @@ define rsync::put (
   }
 
   $rsync_options = join(
-    delete_undef_values([$options, $mypurge, $excludeandinclude, $myuseropt, $source, "${myuser}${mypath}"]), ' ')
+  delete_undef_values([$options, $mypurge, $excludeandinclude, $myuseropt, $source, "${myuser}${mypath}"]), ' ')
 
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",
-    path    => [ '/bin', '/usr/bin' ],
+    path    => ['/bin', '/usr/bin'],
     # perform a dry-run to determine if anything needs to be updated
     # this ensures that we only actually create a Puppet event if something needs to
     # be updated

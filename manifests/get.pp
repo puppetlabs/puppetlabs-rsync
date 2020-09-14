@@ -53,7 +53,6 @@ define rsync::get (
   $logfile       = undef,
   $onlyif        = undef,
 ) {
-
   if $keyfile {
     $mykeyfile = $keyfile
   } else {
@@ -144,7 +143,7 @@ define rsync::get (
 
   $rsync_options = join(
     delete_undef_values([$options, $mypurge, $excludeandinclude, $mylinks, $myhardlinks, $mycopylinks, $mytimes,
-      $myrecursive, $mychown, $mychmod, $mylogfile, "${myuser}${source}", $path]), ' ')
+  $myrecursive, $mychown, $mychmod, $mylogfile, "${myuser}${source}", $path]), ' ')
 
   if !$onlyif {
     $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"
@@ -152,10 +151,9 @@ define rsync::get (
     $onlyif_real = $onlyif
   }
 
-
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",
-    path    => [ '/bin', '/usr/bin', '/usr/local/bin' ],
+    path    => ['/bin', '/usr/bin', '/usr/local/bin'],
     user    => $execuser,
     # perform a dry-run to determine if anything needs to be updated
     # this ensures that we only actually create a Puppet event if something needs to

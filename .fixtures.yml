@@ -1,3 +1,4 @@
+---
 fixtures:
   repositories:
     xinetd: 'https://github.com/puppetlabs/puppetlabs-xinetd.git'
@@ -5,3 +6,4 @@ fixtures:
     stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
   symlinks:
     "rsync": "#{source_dir}"
+...

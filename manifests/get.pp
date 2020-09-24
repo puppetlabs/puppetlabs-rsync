@@ -17,6 +17,7 @@
 #   $chmod   - permissions to pass to rsync (optional)
 #   $logfile - logname to pass to rsync (optional)
 #   $onlyif  - Condition to run the rsync command
+#   $password - password to be passed via the RSYNC_PASSWORD environment variable
 #
 # Actions:
 #   get files via rsync
@@ -52,6 +53,7 @@ define rsync::get (
   $chmod         = undef,
   $logfile       = undef,
   $onlyif        = undef,
+  $password      = undef,
 ) {
 
   if $keyfile {
@@ -152,11 +154,17 @@ define rsync::get (
     $onlyif_real = $onlyif
   }
 
+  if $password {
+    $env = [ "RSYNC_PASSWORD=${password}" ]
+  } else {
+    $env = undef
+  }
 
   exec { "rsync ${name}":
-    command => "rsync -q ${rsync_options}",
-    path    => [ '/bin', '/usr/bin', '/usr/local/bin' ],
-    user    => $execuser,
+    command     => "rsync -q ${rsync_options}",
+    path        => [ '/bin', '/usr/bin', '/usr/local/bin' ],
+    user        => $execuser,
+    environment => $env,
     # perform a dry-run to determine if anything needs to be updated
     # this ensures that we only actually create a Puppet event if something needs to
     # be updated

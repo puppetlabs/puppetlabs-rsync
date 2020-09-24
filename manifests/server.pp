@@ -14,6 +14,7 @@ class rsync::server(
   $use_chroot = 'yes',
   $uid        = 'nobody',
   $gid        = 'nobody',
+  $fake_super = undef,
   $modules    = {},
 ) inherits rsync {
 

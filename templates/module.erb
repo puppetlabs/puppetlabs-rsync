@@ -75,3 +75,6 @@ exclude from       = <%= @exclude_from%>
 <% if @dont_compress -%>
 dont compress      = <%= Array(@dont_compress).join(' ')%>
 <% end -%>
+<% if @fake_super -%>
+fake super = <%= @fake_super %>
+<% end -%>

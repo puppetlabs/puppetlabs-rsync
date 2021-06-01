@@ -50,6 +50,15 @@ class rsync::server(
       require     => Package['rsync'],
     }
   } else {
+    if ($facts['os']['family'] == 'RedHat') and
+        (Integer($facts['os']['release']['major']) >= 8) and
+        ($rsync::manage_package) {
+      package { 'rsync-daemon':
+        ensure => $rsync::package_ensure,
+        notify => Service[$servicename],
+      }
+    }
+
     service { $servicename:
       ensure     => running,
       enable     => true,

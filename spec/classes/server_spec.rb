@@ -35,6 +35,9 @@ describe 'rsync::server', type: :class do
                         'rsync'
                       end
         it { is_expected.to contain_service(servicename) }
+        if facts[:os][:family] == 'RedHat' && Integer(facts[:os][:release][:major]) >= 8
+          it { is_expected.to contain_package('rsync-daemon') }
+        end
       end
 
       describe 'when setting an motd' do

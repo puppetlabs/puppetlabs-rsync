@@ -1,3 +1,15 @@
+## Unsupported Release 1.2.0
+### Summary
+
+This minor release is a roll up of bug fixes and features
+
+#### Added
+- Add support for CentOS8
+- `pid_file` parameter to customize the pid file setting
+
+#### Fixed
+- rsync-daemon package is now automatically installed in CentOS8 when xinetd is disabled.
+
 ## Unsupported Release 1.1.1
 ### Summary
 

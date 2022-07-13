@@ -17,29 +17,6 @@ class rsync::server(
   $modules    = {},
 ) inherits rsync {
 
-  case $facts['os']['family'] {
-    'Debian': {
-      $conf_file = '/etc/rsyncd.conf'
-      $servicename = 'rsync'
-    }
-    'Suse': {
-      $conf_file = '/etc/rsyncd.conf'
-      $servicename = 'rsyncd'
-    }
-    'RedHat': {
-      $conf_file = '/etc/rsyncd.conf'
-      $servicename = 'rsyncd'
-    }
-    'FreeBSD': {
-      $conf_file = '/usr/local/etc/rsync/rsyncd.conf'
-      $servicename = 'rsyncd'
-    }
-    default: {
-      $conf_file = '/etc/rsync.conf'
-      $servicename = 'rsync'
-    }
-  }
-
   if $use_xinetd {
     include xinetd
     xinetd::service { 'rsync':

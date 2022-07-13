@@ -1,4 +1,4 @@
 --- 
 
-conf_file: '/etc/rsync.conf'
-servicename: 'rsync'
+rsync::server::conf_file: '/etc/rsync.conf'
+rsync::server::servicename: 'rsync'

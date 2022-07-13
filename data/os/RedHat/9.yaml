@@ -1,0 +1,4 @@
+---
+
+# RHEL8 and newer have a separate package for the rsync daemon.
+rsyncd_package_name: rsync-daemon

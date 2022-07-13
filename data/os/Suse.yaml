@@ -1,0 +1,4 @@
+---
+
+conf_file: '/etc/rsyncd.conf'
+servicename: 'rsyncd'

@@ -1,2 +1,4 @@
---- {}
+--- 
 
+conf_file: '/etc/rsync.conf'
+servicename: 'rsync'

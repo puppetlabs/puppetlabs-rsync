@@ -1,21 +1,24 @@
 {
   "name": "puppetlabs-rsync",
-  "version": "1.1.0",
-  "author": "Puppet, Inc",
+  "version": "1.2.0",
+  "author": "puppetlabs",
   "summary": "Manages rsync clients, repositories, and servers, & providies defines to easily grab data via rsync.",
   "license": "Apache-2.0",
   "source": "https://github.com/puppetlabs/puppetlabs-rsync",
   "project_page": "https://github.com/puppetlabs/puppetlabs-rsync",
   "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
   "dependencies": [
-    {"name":"puppetlabs/stdlib","version_requirement":">=4.2.0 <5.0.0"},
-    {"name":"puppetlabs/xinetd","version_requirement":">=1.1.0 < 4.0.0"},
-    {"name":"puppetlabs/concat","version_requirement":">= 1.1.1 <5.0.0"}
-  ],
-  "requirements": [
     {
-      "name": "puppet",
-      "version_requirement": ">= 4.7.0 < 5.0.0"
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=4.2.0 <9.0.0"
+    },
+    {
+      "name": "puppetlabs/xinetd",
+      "version_requirement": ">=1.1.0 < 4.0.0"
+    },
+    {
+      "name": "puppetlabs/concat",
+      "version_requirement": ">= 1.1.1 <7.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -23,7 +26,8 @@
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "6.0",
-        "7.0"
+        "7.0",
+        "8.0"
       ]
     },
     {
@@ -55,5 +59,14 @@
         "12"
       ]
     }
-  ]
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 7.0.0"
+    }
+  ],
+  "pdk-version": "1.19.0.pre (heads/master-0-g3d6a310)",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#master",
+  "template-ref": "heads/master-0-g3d2e75c"
 }

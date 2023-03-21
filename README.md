@@ -1,5 +1,9 @@
 # puppetlabs-rsync #
 
+> This module is supported by the Puppet community. We expect it to be of the same high
+> quality as our own Supported modules, but it does not qualify for Puppet Support plans.
+> See the `CODEOWNERS` file for usernames of the maintainers.
+
 #### Table of Contents
 
 1. [Module Description - What does the module do?](#module-description)
@@ -18,8 +22,8 @@ providing defines to easily grab data via rsync.
 
 Install the latest version of rsync
 ~~~puppet
-class { 'rsync': 
-  package_ensure => 'latest' 
+class { 'rsync':
+  package_ensure => 'latest'
 }
 ~~~
 
@@ -59,7 +63,7 @@ rsync::server::module { 'repo':
 }
 ~~~
 
-#### Configuring via Hiera 
+#### Configuring via Hiera
 `rsync::put`, `rsync::get`, and `rsync::server::module` resources can be
 configured using Hiera hashes. For example:
 
@@ -95,7 +99,7 @@ Manage the rsync package.
 
 Ensure the for the rsync package. Any of the valid values for the package resource (present, absent, purged, held, latest) are acceptable.
 
-Default value: 'installed' 
+Default value: 'installed'
 
 ##### `manage_package`
 
@@ -120,7 +124,7 @@ Path to copy to.
 
 Default value: `$name`
 
-##### `user` 
+##### `user`
 
 Username on remote system
 
@@ -266,9 +270,13 @@ Rsync comment.
 
 File containing motd info.
 
+##### `pid_file`
+
+PID file. Defaults to /var/run/rsyncd.pid. The pid file parameter won't be applied if set to "UNSET"; rsyncd will not use a PID file in this case.
+
 ##### `read_only`
 
-yes||no 
+yes||no
 
 Default value: 'yes'
 
@@ -286,7 +294,7 @@ Default value: 'no'
 
 ##### `uid`
 
-uid of rsync server 
+uid of rsync server
 
 Default value: 0
 
@@ -298,7 +306,7 @@ Default value: 0
 
 ##### `incoming_chmod`
 
-Incoming file mode 
+Incoming file mode
 
 Default value: '644'
 
@@ -318,7 +326,7 @@ Default value: 0
 
 File used to support the max connections parameter. Only needed if max_connections > 0.
 
-Default value: '/var/run/rsyncd.lock' 
+Default value: '/var/run/rsyncd.lock'
 
 ##### `secrets_file`
 

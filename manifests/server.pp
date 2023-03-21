@@ -7,38 +7,22 @@
 #   class rsync
 #
 class rsync::server(
-  $use_xinetd = true,
-  $address    = '0.0.0.0',
-  $motd_file  = 'UNSET',
-  $use_chroot = 'yes',
-  $uid        = 'nobody',
-  $gid        = 'nobody',
-  $modules    = {},
-  $xinetd_cps = undef,
+  Boolean                                    $use_xinetd = true,
+  $address                                               = '0.0.0.0',
+  $motd_file                                             = 'UNSET',
+  Variant[Enum['UNSET'], Stdlib::Absolutepath] $pid_file = '/var/run/rsyncd.pid',
+  $use_chroot                                            = 'yes',
+  $uid                                                   = 'nobody',
+  $gid                                                   = 'nobody',
+  $modules                                               = {},
+  Optional[String[1]]                      $package_name = undef,
+  String[1]                                   $conf_file = '/etc/rsync.conf',
+  String[1]                                 $servicename = 'rsync',
+  Stdlib::Ensure::Service                $service_ensure = 'running',
+  Variant[Boolean, Enum['mask']]         $service_enable = true,
+  Boolean                                $manage_package = $rsync::manage_package,
+  Optional[String]                           $xinetd_cps = undef,
 ) inherits rsync {
-
-  case $facts['os']['family'] {
-    'Debian': {
-      $conf_file = '/etc/rsyncd.conf'
-      $servicename = 'rsync'
-    }
-    'Suse': {
-      $conf_file = '/etc/rsyncd.conf'
-      $servicename = 'rsyncd'
-    }
-    'RedHat': {
-      $conf_file = '/etc/rsyncd.conf'
-      $servicename = 'rsyncd'
-    }
-    'FreeBSD': {
-      $conf_file = '/usr/local/etc/rsync/rsyncd.conf'
-      $servicename = 'rsyncd'
-    }
-    default: {
-      $conf_file = '/etc/rsync.conf'
-      $servicename = 'rsync'
-    }
-  }
 
   if $use_xinetd {
     include xinetd
@@ -51,9 +35,23 @@ class rsync::server(
       require     => Package['rsync'],
     }
   } else {
+
+    # Manage the installation of the rsyncd package?
+    if $manage_package {
+
+      # RHEL8 and newer (and their variants) have a separate package for rsyncd daemon.  If the $package_name
+      # variable is defined (the variable is defined in the hiera hierarchy), then install the package.
+      if $package_name {
+        package {$package_name:
+          ensure => $rsync::package_ensure,
+          notify => Service[$servicename],
+        }
+      }
+    }
+
     service { $servicename:
-      ensure     => running,
-      enable     => true,
+      ensure     => $service_ensure,
+      enable     => $service_enable,
       hasstatus  => true,
       hasrestart => true,
       subscribe  => Concat[$conf_file],

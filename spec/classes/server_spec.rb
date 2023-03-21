@@ -67,6 +67,7 @@ describe 'rsync::server', type: :class do
 
         it {
           is_expected.to contain_xinetd__service('rsync').with({ 'cps' => '25 10' })
+        }
       end
 
       describe 'when overriding use_chroot' do

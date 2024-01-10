@@ -1,3 +1,13 @@
 ---
 appveyor.yml:
   delete: true
+
+.github/workflows/release_prep.yml:
+  unmanaged: false
+.github/workflows/release.yml:
+  unmanaged: false
+
+Gemfile:
+  optional:
+    ':development':
+    - gem: 'github_changelog_generator'

@@ -6,7 +6,7 @@
 #   class xinetd if use_xinetd is set to true
 #   class rsync
 #
-class rsync::server(
+class rsync::server (
   Boolean                                    $use_xinetd = true,
   $address                                               = '0.0.0.0',
   $motd_file                                             = 'UNSET',
@@ -22,7 +22,6 @@ class rsync::server(
   Variant[Boolean, Enum['mask']]         $service_enable = true,
   Boolean                                $manage_package = $rsync::manage_package,
 ) inherits rsync {
-
   if $use_xinetd {
     include xinetd
     xinetd::service { 'rsync':
@@ -33,14 +32,12 @@ class rsync::server(
       require     => Package['rsync'],
     }
   } else {
-
     # Manage the installation of the rsyncd package?
     if $manage_package {
-
       # RHEL8 and newer (and their variants) have a separate package for rsyncd daemon.  If the $package_name
       # variable is defined (the variable is defined in the hiera hierarchy), then install the package.
       if $package_name {
-        package {$package_name:
+        package { $package_name:
           ensure => $rsync::package_ensure,
           notify => Service[$servicename],
         }

@@ -6,6 +6,8 @@ appveyor.yml:
   unmanaged: false
 .github/workflows/release.yml:
   unmanaged: false
+.github/workflows/ci.yml:
+  unmanaged: false
 
 Gemfile:
   optional:

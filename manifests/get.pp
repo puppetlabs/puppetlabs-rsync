@@ -151,7 +151,6 @@ define rsync::get (
     $onlyif_real = $onlyif
   }
 
-
   exec { "rsync ${name}":
     command => "rsync -q ${rsync_options}",
     path    => ['/bin', '/usr/bin', '/usr/local/bin'],

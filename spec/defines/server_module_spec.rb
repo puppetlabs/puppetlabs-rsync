@@ -77,21 +77,21 @@ describe 'rsync::server::module', type: :define do
 
       {
         comment:            'super module !',
-        read_only:          'no',
-        write_only:         'yes',
-        use_chroot:         'no',
-        list:               'no',
+        read_only:          false,
+        write_only:         true,
+        use_chroot:         false,
+        list:               false,
         uid:                '4682',
         gid:                '4682',
-        numeric_ids:        'no',
+        numeric_ids:        false,
         incoming_chmod:     '0777',
         outgoing_chmod:     '0777',
-        max_connections:    '10',
-        timeout:            '10',
+        max_connections:    10,
+        timeout:            10,
         secrets_file:       '/path/to/secrets',
         hosts_allow:        ['localhost', '169.254.42.51'],
         hosts_deny:         ['some-host.example.com', '10.0.0.128'],
-        transfer_logging:   'true',
+        transfer_logging:   true,
         log_format:         '%t %a %m %f %b',
         refuse_options:     ['c', 'delete'],
         include:            ['a', 'b'],
@@ -99,7 +99,7 @@ describe 'rsync::server::module', type: :define do
         include_from:       '/path/to/file',
         exclude_from:       '/path/to/otherfile',
         dont_compress:      ['a', 'b'],
-        ignore_nonreadable: 'yes',
+        ignore_nonreadable: true,
       }.each_pair do |k, v|
         describe "when overriding #{k}" do
           let :params do

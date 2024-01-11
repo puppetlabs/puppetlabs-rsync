@@ -42,7 +42,7 @@ describe 'rsync::server', type: :class do
 
       describe 'when setting an motd' do
         let :params do
-          { motd_file: true }
+          { motd_file: 'foo' }
         end
 
         it {
@@ -62,7 +62,7 @@ describe 'rsync::server', type: :class do
 
       describe 'when overriding use_chroot' do
         let :params do
-          { use_chroot: 'no' }
+          { use_chroot: false }
         end
 
         it {

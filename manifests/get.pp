@@ -1,57 +1,61 @@
-# Definition: rsync::get
+# @summary get files via rsync
 #
-# get files via rsync
+# @param source
+#   source to copy from
+# @param path
+#   path to copy to, defaults to $name
+# @param user
+#   username on remote system
+# @param purge
+#   if set, rsync will use '--delete'
+# @param exclude
+#   Path or paths to be exclude
+# @param include
+#   Path or paths to include
+# @param exclude_first
+#   if 'true' (default) then first exclude and then include; the other way around if 'false'
+# @param keyfile
+#   path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
+# @param timeout
+#   timeout in seconds, defaults to 900
+# @param options
+#   default options to pass to rsync (-a)
+# @param chown
+#   ownership to pass to rsync (requires rsync 3.1.0+)
+# @param chmod
+#   permissions to pass to rsync
+# @param logfile
+#   logname to pass to rsync
+# @param onlyif
+#   Condition to run the rsync command
 #
-# Parameters:
-#   $source  - source to copy from
-#   $path    - path to copy to, defaults to $name
-#   $user    - username on remote system
-#   $purge   - if set, rsync will use '--delete'
-#   $exlude  - string (or array) to be excluded
-#   $include - string (or array) to be included
-#   $exclude_first - if 'true' (default) then first exclude and then include; the other way around if 'false'
-#   $keyfile - path to ssh key used to connect to remote host, defaults to /home/${user}/.ssh/id_rsa
-#   $timeout - timeout in seconds, defaults to 900
-#   $options - default options to pass to rsync (-a)
-#   $chown   - ownership to pass to rsync (optional; requires rsync 3.1.0+)
-#   $chmod   - permissions to pass to rsync (optional)
-#   $logfile - logname to pass to rsync (optional)
-#   $onlyif  - Condition to run the rsync command
-#
-# Actions:
-#   get files via rsync
-#
-# Requires:
-#   $source must be set
-#
-# Sample Usage:
-#
+# @example Sync from a source
 #  rsync::get { '/foo':
 #    source  => "rsync://${rsyncServer}/repo/foo/",
 #    require => File['/foo'],
-#  } # rsync
+#  }
 #
 define rsync::get (
-  $source,
-  $path          = $name,
-  $user          = undef,
-  $purge         = undef,
-  $recursive     = undef,
-  $links         = undef,
-  $hardlinks     = undef,
-  $copylinks     = undef,
-  $times         = undef,
-  $include       = undef,
-  $exclude       = undef,
-  $exclude_first = true,
-  $keyfile       = undef,
-  $timeout       = '900',
-  $execuser      = 'root',
-  $options       = '-a',
-  $chown         = undef,
-  $chmod         = undef,
-  $logfile       = undef,
-  $onlyif        = undef,
+  String[1] $source,
+  String[1] $path = $name,
+  Optional[String[1]] $user = undef,
+  Boolean $purge = false,
+  Boolean $recursive = false,
+  Boolean $links = false,
+  Boolean $hardlinks = false,
+  Boolean $copylinks = false,
+  Boolean $times = false,
+  Variant[Array[String[1]], String[1]] $include = [],
+  Variant[Array[String[1]], String[1]] $exclude = [],
+  Boolean $exclude_first = true,
+  Optional[String[1]] $keyfile = undef,
+  Integer[0] $timeout = 900,
+  String[1] $execuser = 'root',
+  Array[String[1]] $options = ['-a'],
+  Optional[String[1]] $chown = undef,
+  Optional[String[1]] $chmod = undef,
+  Optional[String[1]] $logfile       = undef,
+  Variant[Undef, String[1], Array[String[1]]] $onlyif = undef,
 ) {
   if $keyfile {
     $mykeyfile = $keyfile
@@ -60,100 +64,85 @@ define rsync::get (
   }
 
   if $user {
-    $myuser = "-e 'ssh -i ${mykeyfile} -l ${user}' ${user}@"
+    $myuser = ['-e', "'ssh -i ${mykeyfile} -l ${user}'", "${user}@"]
   } else {
-    $myuser = undef
+    $myuser = []
   }
 
   if $purge {
-    $mypurge = '--delete'
+    $mypurge = ['--delete']
   } else {
-    $mypurge = undef
+    $mypurge = []
   }
 
-  if $exclude {
-    $myexclude = join(prefix(flatten([$exclude]), '--exclude='), ' ')
-  } else {
-    $myexclude = undef
-  }
-
-  if $include {
-    $myinclude = join(prefix(flatten([$include]), '--include='), ' ')
-  } else {
-    $myinclude = undef
-  }
+  $myexclude = join(prefix($exclude, '--exclude='), ' ')
+  $myinclude = join(prefix($include, '--include='), ' ')
 
   if $recursive {
-    $myrecursive = '-r'
+    $myrecursive = ['-r']
   } else {
-    $myrecursive = undef
+    $myrecursive = []
   }
 
   if $links {
-    $mylinks = '--links'
+    $mylinks = ['--links']
   } else {
-    $mylinks = undef
+    $mylinks = []
   }
 
   if $hardlinks {
-    $myhardlinks = '--hard-links'
+    $myhardlinks = ['--hard-links']
   } else {
-    $myhardlinks = undef
+    $myhardlinks = []
   }
 
   if $copylinks {
-    $mycopylinks = '--copy-links'
+    $mycopylinks = ['--copy-links']
   } else {
-    $mycopylinks = undef
+    $mycopylinks = []
   }
 
   if $times {
-    $mytimes = '--times'
+    $mytimes = ['--times']
   } else {
-    $mytimes = undef
+    $mytimes = []
   }
 
   if $chown {
-    $mychown = "--chown=${chown}"
+    $mychown = ["--chown=${chown}"]
   } else {
-    $mychown = undef
+    $mychown = []
   }
 
   if $chmod {
-    $mychmod = "--chmod=${chmod}"
+    $mychmod = ["--chmod=${chmod}"]
   } else {
-    $mychmod = undef
+    $mychmod = []
   }
 
   if $logfile {
-    $mylogfile = "--log-file=${logfile}"
+    $mylogfile = ["--log-file=${logfile}"]
   } else {
-    $mylogfile = undef
+    $mylogfile = []
   }
 
-  if $include or $exclude {
-    if $exclude_first {
-      $excludeandinclude = join(delete_undef_values([$myexclude, $myinclude]), ' ')
-    } else {
-      $excludeandinclude = join(delete_undef_values([$myinclude, $myexclude]), ' ')
-    }
+  if $exclude_first {
+    $excludeandinclude = $myexclude + $myinclude
   } else {
-    $excludeandinclude = undef
+    $excludeandinclude = $myinclude + $myexclude
   }
 
-  $rsync_options = join(
-    delete_undef_values([$options, $mypurge, $excludeandinclude, $mylinks, $myhardlinks, $mycopylinks, $mytimes,
-      $myrecursive, $mychown, $mychmod, $mylogfile, "${myuser}${source}", $path]), ' ')
+  $command = ['rsync' + '-q'] + $options + $mypurge + $excludeandinclude + $mylinks + $myhardlinks + $mycopylinks + $mytimes + $myrecursive + $mychown + $mychmod + $mylogfile + ["${myuser}${source}"] + $path
 
-  if !$onlyif {
-    $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"
-  } else {
+  if $onlyif {
     $onlyif_real = $onlyif
+  } else {
+    # TODO: add dry run to $command?
+    $onlyif_real = "test `rsync --dry-run --itemize-changes ${rsync_options} | wc -l` -gt 0"
   }
-
 
   exec { "rsync ${name}":
-    command => "rsync -q ${rsync_options}",
+    command => $command,
     path    => ['/bin', '/usr/bin', '/usr/local/bin'],
     user    => $execuser,
     # perform a dry-run to determine if anything needs to be updated

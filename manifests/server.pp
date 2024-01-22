@@ -23,7 +23,7 @@ class rsync::server (
   Boolean                                $manage_package = $rsync::manage_package,
 ) inherits rsync {
   if $use_xinetd {
-    include xinetd
+    include ::xinetd
     xinetd::service { 'rsync':
       bind        => $address,
       port        => '873',

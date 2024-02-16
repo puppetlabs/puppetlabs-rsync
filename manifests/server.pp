@@ -1,26 +1,51 @@
-# Class: rsync::server
+# @sumnmary
+#   The rsync server. Supports both standard rsync as well as rsync over ssh
 #
-# The rsync server. Supports both standard rsync as well as rsync over ssh
-#
-# Requires:
-#   class xinetd if use_xinetd is set to true
-#   class rsync
+# @param use_xinetd
+#   use xinetd. If true the xinetd class is required.
+# @param address
+#   the address to bind
+# @param motd_file
+#   message of the day to display to clients on each connet.
+#   use 'UNSET' to disable the message
+# @param pid_file
+#   path of the pid file. Use 'UNSET' to disable pid file
+# @use_chroot
+#   chroot to the path before starting the file transfer
+# @param uid
+#   user name or user id that file transfers to and from
+# @param gid
+#   group name or group id that file transfers to and from
+# @param modules
+#   create rsync::server::module defined type resources
+# @param package_name
+#   name of the rsync server package
+# @param conf_file
+#   path to the config file
+# @param servicename
+#   name of the rsync server service
+# @param service_ensure
+#   ensure status of the rsync server service
+# @param service_enable
+#   enable the rsync server service
+# @param manage_package
+#   manage the rsync server package
 #
 class rsync::server (
-  Boolean                                    $use_xinetd = true,
-  $address                                               = '0.0.0.0',
-  $motd_file                                             = 'UNSET',
+  Boolean $use_xinetd = true,
+  String[1] $address = '0.0.0.0',
+  String[1] $motd_file = 'UNSET',
   Variant[Enum['UNSET'], Stdlib::Absolutepath] $pid_file = '/var/run/rsyncd.pid',
-  $use_chroot                                            = 'yes',
-  $uid                                                   = 'nobody',
-  $gid                                                   = 'nobody',
-  $modules                                               = {},
-  Optional[String[1]]                      $package_name = undef,
-  String[1]                                   $conf_file = '/etc/rsync.conf',
-  String[1]                                 $servicename = 'rsync',
-  Stdlib::Ensure::Service                $service_ensure = 'running',
-  Variant[Boolean, Enum['mask']]         $service_enable = true,
-  Boolean                                $manage_package = $rsync::manage_package,
+  Boolean $use_chroot = true,
+  String[1] $uid = 'nobody',
+  String[1] $gid = 'nobody',
+  Hash $modules = {},
+  Optional[String[1]] $package_name = undef,
+  Stdlib::Absolutepath $conf_file = '/etc/rsync.conf',
+  String[1] $servicename = 'rsync',
+  Stdlib::Ensure::Service $service_ensure = 'running',
+  Variant[Boolean, Enum['mask']] $service_enable = true,
+  Boolean $manage_package = $rsync::manage_package,
 ) inherits rsync {
   if $use_xinetd {
     include xinetd

@@ -1,19 +1,19 @@
 [ <%= @name %> ]
 path               = <%= @path %>
-read only          = <%= @read_only %>
-write only         = <%= @write_only %>
-list               = <%= @list %>
+read only          = <% if @read_only %>yes<% else %>no<% end %>
+write only         = <% if @write_only %>yes<% else %>no<% end %>
+list               = <% if @list %>yes<% else %>no<% end %>
 <% if @uid -%>
 uid                = <%= @uid %>
 <% end -%>
 <% if @gid -%>
 gid                = <%= @gid %>
 <% end -%>
-<% if @numeric_ids -%>
-numeric ids        = <%= @numeric_ids %>
+<% if !@numeric_ids.nil? -%>
+numeric ids        = <% if @numeric_ids %>yes<% else %>no<% end %>
 <% end -%>
-<% if @use_chroot -%>
-use chroot         = <%= @use_chroot %>
+<% if !@use_chroot.nil? -%>
+use chroot         = <% if @use_chroot %>yes<% else %>no<% end %>
 <% end -%>
 <% if @incoming_chmod -%>
 incoming chmod     = <%= @incoming_chmod %>
@@ -27,7 +27,7 @@ max connections    = <%= @max_connections %>
 <% if @timeout -%>
 timeout            = <%= @timeout %>
 <% end -%>
-<% if Integer(@max_connections) > 0 -%>
+<% if @max_connections > 0 -%>
 lock file          = <%= @lock_file %>
 <% end -%>
 <% if @comment -%>
@@ -45,8 +45,8 @@ hosts allow        = <%= Array(@hosts_allow).join(' ')%>
 <% if @hosts_deny -%>
 hosts deny         = <%= Array(@hosts_deny).join(' ')%>
 <% end -%>
-<% if @transfer_logging -%>
-transfer logging   = <%= @transfer_logging %>
+<% if !@transfer_logging.nil? -%>
+transfer logging   = <% if @transfer_logging %>yes<% else %>no<% end %>
 <% end -%>
 <% if @log_format -%>
 log format         = <%= @log_format %>
@@ -54,8 +54,8 @@ log format         = <%= @log_format %>
 <% if @refuse_options -%>
 refuse options     = <%= Array(@refuse_options).join(' ')%>
 <% end -%>
-<% if @ignore_nonreadable -%>
-ignore nonreadable = <%= @ignore_nonreadable %>
+<% if !@ignore_nonreadable.nil? -%>
+ignore nonreadable = <% if @ignore_nonreadable %>yes<% else %>no<% end %>
 <% end -%>
 <% if @log_file -%>
 log file = <%= @log_file %>

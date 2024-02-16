@@ -6,7 +6,7 @@ pid file = <%= @pid_file %>
 <% end -%>
 uid = <%= @uid %>
 gid = <%= @gid %>
-use chroot = <%= @use_chroot %>
+use chroot = <% if @use_chroot %>yes<% else %>no<% end %>
 log format = %t %a %m %f %b
 syslog facility = local3
 timeout = 300

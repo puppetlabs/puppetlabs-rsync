@@ -1,3 +1,4 @@
 ---
 
 rsync::server::conf_file: '/etc/rsyncd.conf'
+rsync::server::include_conf_dir: '/etc/rsync.d/'

@@ -17,6 +17,7 @@ class rsync::server (
   $modules                                               = {},
   Optional[String[1]]                      $package_name = undef,
   String[1]                                   $conf_file = '/etc/rsync.conf',
+  String[1]                                  $include_conf_dir= '/etc/rsync.d/'
   String[1]                                 $servicename = 'rsync',
   Stdlib::Ensure::Service                $service_ensure = 'running',
   Variant[Boolean, Enum['mask']]         $service_enable = true,
@@ -79,5 +80,12 @@ class rsync::server (
   }
 
   create_resources(rsync::server::module, $modules)
+  
+  concat::fragment { 'rsyncd_conf_footer':
+    target  => $conf_file,
+    content => template('rsync/footer.erb'),
+    order   => '99_footer',
+  }
+  
 
 }

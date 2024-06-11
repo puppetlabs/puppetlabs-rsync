@@ -1,9 +1,5 @@
-# Class: rsync::repo
-#
-# This module creates a rsync repository
-#
-# Requires:
-#   class rsync::server
+# @summary
+#   Create a rsync repository
 #
 class rsync::repo {
 

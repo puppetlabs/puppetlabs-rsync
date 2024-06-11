@@ -9,12 +9,11 @@ describe 'rsync::server', type: :class do
       describe 'when using default params' do
         it {
           is_expected.to contain_class('xinetd')
-          is_expected.to contain_xinetd__service('rsync').with(bind: '0.0.0.0')
+          is_expected.to contain_xinetd__service('rsync').with(port: 873)
           is_expected.not_to contain_service('rsync')
           is_expected.not_to contain_file('/etc/rsync-motd')
           is_expected.to contain_concat__fragment('rsyncd_conf_header').with(order: '00_header')
           is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(%r{^use chroot\s*=\s*yes$})
-          is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(%r{^address\s*=\s*0.0.0.0$})
           is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(%r{^pid file\s*=\s*/var/run/rsyncd.pid$})
         }
       end
@@ -76,6 +75,7 @@ describe 'rsync::server', type: :class do
         end
 
         it {
+          is_expected.to contain_xinetd__service('rsync').with(bind: '10.0.0.42')
           is_expected.to contain_concat__fragment('rsyncd_conf_header').with_content(%r{^address\s*=\s*10.0.0.42$})
         }
       end

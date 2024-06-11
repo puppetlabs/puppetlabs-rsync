@@ -8,7 +8,7 @@
 #
 class rsync::server (
   Boolean                                    $use_xinetd = true,
-  $address                                               = '0.0.0.0',
+  $address                                               = 'UNSET',
   $motd_file                                             = 'UNSET',
   Variant[Enum['UNSET'], Stdlib::Absolutepath] $pid_file = '/var/run/rsyncd.pid',
   $use_chroot                                            = 'yes',
@@ -25,11 +25,16 @@ class rsync::server (
   if $use_xinetd {
     include xinetd
     xinetd::service { 'rsync':
-      bind        => $address,
       port        => '873',
       server      => '/usr/bin/rsync',
       server_args => "--daemon --config ${conf_file}",
       require     => Package['rsync'],
+    }
+
+    if ($address != 'UNSET') {
+      Xinetd::Service['rsync'] {
+        bind => $address,
+      }
     }
   } else {
     # Manage the installation of the rsyncd package?

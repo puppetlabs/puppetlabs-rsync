@@ -77,8 +77,7 @@ define rsync::server::module (
   $exclude            = undef,
   $exclude_from       = undef,
   $dont_compress      = undef,
-  $ignore_nonreadable = undef)  {
-
+  $ignore_nonreadable = undef) {
   concat::fragment { "frag-${name}":
     content => template('rsync/module.erb'),
     target  => $rsync::server::conf_file,

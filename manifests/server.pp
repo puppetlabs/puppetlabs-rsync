@@ -79,5 +79,4 @@ class rsync::server (
   }
 
   create_resources(rsync::server::module, $modules)
-
 }

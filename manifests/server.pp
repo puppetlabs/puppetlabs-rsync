@@ -21,11 +21,13 @@ class rsync::server (
   Stdlib::Ensure::Service                $service_ensure = 'running',
   Variant[Boolean, Enum['mask']]         $service_enable = true,
   Boolean                                $manage_package = $rsync::manage_package,
+  Optional[String]                           $xinetd_cps = undef,
 ) inherits rsync {
   if $use_xinetd {
     include xinetd
     xinetd::service { 'rsync':
       bind        => $address,
+      cps         => $xinetd_cps,
       port        => '873',
       server      => '/usr/bin/rsync',
       server_args => "--daemon --config ${conf_file}",

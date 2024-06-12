@@ -54,13 +54,13 @@ define rsync::get (
   $onlyif        = undef,
 ) {
   if $keyfile {
-    $mykeyfile = $keyfile
+    $mykeyfile = "-i $keyfile"
   } else {
-    $mykeyfile = "/home/${user}/.ssh/id_rsa"
+    $mykeyfile = ""
   }
 
   if $user {
-    $myuser = "-e 'ssh -i ${mykeyfile} -l ${user}' ${user}@"
+    $myuser = "-e 'ssh ${mykeyfile} -l ${user}' ${user}@"
   } else {
     $myuser = undef
   }

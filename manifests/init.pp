@@ -9,9 +9,10 @@ class rsync (
   $gets              = {},
 ) {
   if $manage_package {
-    package { 'rsync':
-      ensure => $package_ensure,
-    } -> Rsync::Get<| |>
+    ensure_packages([ 'rsync' ],
+      { ensure => $package_ensure, }
+    )
+    Package['rsync'] -> Rsync::Get<| |>
   }
 
   create_resources(rsync::put, $puts)

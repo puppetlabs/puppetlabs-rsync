@@ -35,6 +35,7 @@
 #   $exclude            - list of files to exclude
 #   $exclude_from       - file containing a list of files to exclude
 #   $dont_compress      - disable compression on matching files
+#   $use_chroot       - yes||no, defaults to undef
 #
 #   sets up an rsync server
 #
@@ -77,7 +78,8 @@ define rsync::server::module (
   $exclude            = undef,
   $exclude_from       = undef,
   $dont_compress      = undef,
-  $ignore_nonreadable = undef)  {
+  $ignore_nonreadable = undef,
+  $use_chroot         = undef)  {
 
   concat::fragment { "frag-${name}":
     content => template('rsync/module.erb'),

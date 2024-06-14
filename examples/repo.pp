@@ -1,1 +1,1 @@
-include rsync::repo
+include ::rsync::repo

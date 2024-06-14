@@ -7,7 +7,7 @@
 #
 class rsync::repo {
 
-  include rsync::server
+  include ::rsync::server
 
   $base = '/data/rsync'
 

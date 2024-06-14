@@ -1,1 +1,1 @@
-include rsync
+include ::rsync
